@@ -1,6 +1,6 @@
 # PhyAI
 Phylogenetic Trees, Machine Learning Workshop
-<img src="https://github.com/ozgranit/PhyAI/blob/master/Maximum-likelihood-phylogenetic-tree-of-ABC-A-transporters-Numbers-next-to-the-branching.png" width="102">
+<img src="https://github.com/ozgranit/PhyAI/blob/master/Maximum-likelihood-phylogenetic-tree-of-ABC-A-transporters-Numbers-next-to-the-branching.png" width="248">
 
 Phylogenetic trees: Background
   Data:   Multiple datasets of species and their genetic info

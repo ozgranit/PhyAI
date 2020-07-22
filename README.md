@@ -15,5 +15,5 @@ Phylogenetic Trees, Machine Learning Workshop
           
 
 # Project goal:      
-              Accelerate the search Using Machine Learning tools / Using Reinforcement learning methodology  
+              Accelerate the search Using Machine Learning tools and Reinforcement learning methodology  
   

@@ -34,7 +34,7 @@ def plot_loss(TrainLoss, TestLoss=None):
 	plt.ylabel('Log-Loss')
 	plt.plot(range(len(TrainLoss)), TrainLoss, label="Train-loss")
 	if TestLoss is not None:
-		plt.plot(range(len(TestLoss)), TestLoss, label="Test-loss")
+		plt.plot(TestLoss[0], TestLoss[1], label="Test-loss")
 	plt.legend()
 	plt.title("Performance")
 	plt.savefig('LNN-Performance.png')
@@ -98,7 +98,7 @@ def lnn_learning(
 	optimizer = optim.SGD(N.parameters(), lr=learning_rate)
 
 	TrainLoss = []
-	TestLoss = []
+	TestLoss = [[], []]    # TestLoss[0] is test lost val, TestLoss[1] is test lost time_step
 
 	# load prev Stats
 	start = 0
@@ -111,8 +111,8 @@ def lnn_learning(
 	###############
 	# RUN TRAINING#
 	###############
-	LOG_EVERY_N_STEPS = 10000
-	CALC_TEST_EVERY_N_STEPS = 50000
+	LOG_EVERY_N_STEPS = 1000
+	CALC_TEST_EVERY_N_STEPS = 500
 
 	for t in range(start, time_steps):
 		x_train, labels = get_train_batch(batch_size=batch_size)
@@ -138,7 +138,8 @@ def lnn_learning(
 		optimizer.zero_grad()
 
 		if t % CALC_TEST_EVERY_N_STEPS == 0 and t > 1:
-			TestLoss.append(test_model(N))
+			TestLoss[0].append(t)
+			TestLoss[1].append(test_model(N))
 
 		if t % LOG_EVERY_N_STEPS == 0 and t > 1:
 			print("Timestep %d" % (t,))
@@ -155,4 +156,9 @@ def lnn_learning(
 
 			plot_loss(TrainLoss, TestLoss)
 
-	return TrainLoss
+	# calc test loss and plot final result
+	TestLoss[0].append(time_steps)
+	TestLoss[1].append(test_model(N))
+	plot_loss(TrainLoss, TestLoss)
+	print(TestLoss)
+	return TrainLoss, TestLoss

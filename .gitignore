@@ -1,3 +1,12 @@
 
 dirpath/learning_subset_1000ds.csv
 regression_model/dirpath/learning_subset_1000ds.csv
+regression_model/past results/res 1/N_params.pkl
+regression_model/past results/res 1/statistics.pkl
+regression_model/past results/res 1/LNN-Performance.png
+regression_model/dirpath/Training_set.csv
+regression_model/dirpath/Test_set.csv
+regression_model/dirpath/sample.csv
+regression_model/dirpath/sample.csv
+regression_model/dirpath/Test_set.csv
+*.csv

@@ -34,7 +34,7 @@ def plot_loss(TrainLoss, TestLoss=None):
 	plt.ylabel('Log-Loss')
 	plt.plot(range(len(TrainLoss)), TrainLoss, label="Train-loss")
 	if TestLoss is not None:
-		plt.plot(TestLoss[0], TestLoss[1], label="Test-loss")
+		plt.plot(TestLoss[0], TestLoss[1], 'rx',  label="Test-loss")
 	plt.legend()
 	plt.title("Performance")
 	plt.savefig('LNN-Performance.png')
@@ -112,7 +112,7 @@ def lnn_learning(
 	# RUN TRAINING#
 	###############
 	LOG_EVERY_N_STEPS = 1000
-	CALC_TEST_EVERY_N_STEPS = 500
+	CALC_TEST_EVERY_N_STEPS = 50000
 
 	for t in range(start, time_steps):
 		x_train, labels = get_train_batch(batch_size=batch_size)

@@ -74,8 +74,8 @@ def get_train_batch(file_path=r'dirpath\Training_set.csv', batch_size=32):
 		reader = csv.reader(f)
 		for row in reader:
 			x, y = handle_row(row)
-			x_list.append(x)  # remove label and first columns which aren't attributes
-			y_list.append(y)  # take only label
+			x_list.append(x)
+			y_list.append(y)
 
 	return np.vstack(x_list), np.vstack(y_list)
 

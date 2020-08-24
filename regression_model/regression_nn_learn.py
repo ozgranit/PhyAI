@@ -96,6 +96,8 @@ def lnn_learning(
 	# Loss and Optimizer
 	criterion = nn.SmoothL1Loss()  # nn.MSELoss()
 	optimizer = optim.SGD(N.parameters(), lr=learning_rate)
+	# every step_size we update new_lr = old_lr*gamma
+	#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=(time_steps/10), gamma=0.1)
 
 	TrainLoss = []
 	TestLoss = [[], []]    # TestLoss[0] is test lost val, TestLoss[1] is test lost time_step
@@ -111,8 +113,8 @@ def lnn_learning(
 	###############
 	# RUN TRAINING#
 	###############
-	LOG_EVERY_N_STEPS = 1000
-	CALC_TEST_EVERY_N_STEPS = 50000
+	LOG_EVERY_N_STEPS = 10000
+	CALC_TEST_EVERY_N_STEPS = 30000
 
 	for t in range(start, time_steps):
 		x_train, labels = get_train_batch(batch_size=batch_size)
@@ -136,6 +138,8 @@ def lnn_learning(
 		loss.backward()
 		optimizer.step()
 		optimizer.zero_grad()
+		# update lr
+		#scheduler.step()
 
 		if t % CALC_TEST_EVERY_N_STEPS == 0 and t > 1:
 			TestLoss[0].append(t)
@@ -157,8 +161,8 @@ def lnn_learning(
 			plot_loss(TrainLoss, TestLoss)
 
 	# calc test loss and plot final result
-	TestLoss[0].append(time_steps)
-	TestLoss[1].append(test_model(N))
+	# TestLoss[0].append(time_steps)
+	# TestLoss[1].append(test_model(N))
 	plot_loss(TrainLoss, TestLoss)
 	print(TestLoss)
 	return TrainLoss, TestLoss

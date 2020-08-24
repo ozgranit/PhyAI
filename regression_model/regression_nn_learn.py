@@ -75,8 +75,8 @@ def lnn_learning(
 	# every step_size we update new_lr = old_lr*gamma
 	#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=(time_steps/10), gamma=0.1)
 
-	LOG_EVERY_N_STEPS = 200
-	CALC_TEST_EVERY_N_STEPS = 500
+	LOG_EVERY_N_STEPS = 5000
+	CALC_TEST_EVERY_N_STEPS = 20000
 
 	for t in range(start, time_steps):
 		###################

@@ -19,10 +19,13 @@ def main(time_steps):
 	naive_loss = test_naive_model()
 	print("LNN Best Loss: %f" % min(TestLoss[1]))
 	print("Naive Model Loss: %f" % naive_loss)
-	if naive_loss < min(TestLoss):
+	if naive_loss < min(TestLoss[1]):
 		print("Naive Model did better.")
 	else:
 		print("LNN did better.")
+
+	idx = TestLoss[1].index(min(TestLoss[1]))
+	print("LNN Best Loss after %d Steps" % TestLoss[0][idx])
 	# plot_loss(TrainLoss, TestLoss)
 
 
@@ -31,7 +34,7 @@ if __name__ == '__main__':
 	# split_test_train(p=0.5, file_path=r"dirpath\example-oz.csv")
 	# split_test_train(file_path=r"dirpath\learning_subset_1000ds.csv")
 	# split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
-	time_steps = 1000
+	time_steps = 100000
 	# Run training
 	main(time_steps)
 	#

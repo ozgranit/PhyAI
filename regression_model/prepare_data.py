@@ -68,6 +68,7 @@ def get_train_batch(file_path=r'dirpath\Training_set.csv', batch_size=32):
 			f.seek(0)
 			random_line = f.readline()  # so we'll grab the first line instead
 		resultfile.write(random_line)
+		f.close()
 	resultfile.close()
 
 	with open(samplefilename, newline='') as f:

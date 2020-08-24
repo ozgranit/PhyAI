@@ -2,10 +2,10 @@ import os
 from regression_model import LNN
 from regression_nn_learn import plot_loss, lnn_learning
 from prepare_data import split_test_train
-from naive_model import naive_model
+from naive_model import test_naive_model
 
 BATCH_SIZE = 32
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 1e-4
 
 
 def main(time_steps):
@@ -16,8 +16,13 @@ def main(time_steps):
 		learning_rate=LEARNING_RATE,
 		batch_size=BATCH_SIZE,
 	)
-	naive_model = naive_model()
-
+	naive_loss = test_naive_model()
+	print("LNN Best Loss: %f" % min(TestLoss[1]))
+	print("Naive Model Loss: %f" % naive_loss)
+	if naive_loss < min(TestLoss):
+		print("Naive Model did better.")
+	else:
+		print("LNN did better.")
 	# plot_loss(TrainLoss, TestLoss)
 
 
@@ -25,7 +30,8 @@ if __name__ == '__main__':
 	# split_test_train(file_path=r"dirpath\model to overfit.csv")
 	# split_test_train(p=0.5, file_path=r"dirpath\example-oz.csv")
 	# split_test_train(file_path=r"dirpath\learning_subset_1000ds.csv")
-	time_steps = 90000
+	# split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
+	time_steps = 1000
 	# Run training
 	main(time_steps)
 	#

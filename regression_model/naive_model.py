@@ -31,13 +31,17 @@ def SmoothL1Loss(x, y):
 		return abs(x-y)-0.5
 
 
+def L1Loss(x, y):
+	return abs(x-y)
+
+
 def test_naive_model():
 
 	val = naive_model()
 	TestLoss = []
 
 	for x, y in get_test_data():
-		loss = SmoothL1Loss(val, y)
+		loss = L1Loss(val, y)
 		TestLoss.append(np.log(loss.item()))
 	return np.mean(TestLoss)
 

@@ -26,13 +26,14 @@ def plot_loss(TrainLoss, TestLoss=None):
 # test model on test-set using mean of loss
 def test_model(model):
 	TestLoss = []
+	criterion = nn.L1Loss()
 	with torch.no_grad():
 		for x, y in get_test_data():
 			x = torch.tensor(x, dtype=torch.float32)
 			y = torch.tensor(y, dtype=torch.float32)
 
 			predictions = model(x.float())
-			loss = nn.L1Loss()(predictions, y)
+			loss = criterion(predictions, y)
 			TestLoss.append(np.log(loss.item()))
 	return np.mean(TestLoss)
 

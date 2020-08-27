@@ -24,11 +24,12 @@ def split_test_train(p=0.2, file_path=r"dirpath\learning_subset_1000ds.csv"):
 		os.remove(trainfilename)
 
 	# reads 100000 lines every time, to handle large csv files
-	for chunk in pd.read_csv(file_path, chunksize=200000):
+	for chunk in pd.read_csv(file_path, chunksize=20000):
 
 		train, test = train_test_split(chunk, test_size=p)
 		train.to_csv(trainfilename, mode='a', header=False)
 		test.to_csv(testfilename, mode='a', header=False)
+		exit()
 
 
 def handle_row(row):

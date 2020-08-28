@@ -13,7 +13,7 @@ else:
     file_name = "learning_subset_1000ds.csv"
 
 with open(file_name, "r") as csv_file:
-    csv_reader = csv.reader(csv_file,delimiter=',')
+    csv_reader = csv.reader(csv_file, delimiter=',')
     for row in csv_reader:
         if current_value == "x":
             current_value = ""

@@ -6,8 +6,8 @@ from prepare_data import split_test_train
 from naive_model import test_naive_model
 import numpy as np
 
-BATCH_SIZE = 32
-LEARNING_RATE = 1e-3
+BATCH_SIZE = 32*2
+LEARNING_RATE = 1e-4
 
 
 def main(time_steps):
@@ -39,9 +39,9 @@ if __name__ == '__main__':
 	# split_test_train(file_path=r"dirpath\model to overfit.csv")
 	# split_test_train(p=0.5, file_path=r"dirpath\example-oz.csv")
 	# split_test_train(file_path=r"dirpath\learning_subset_1000ds.csv")
-	split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
+	# split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
 
-	time_steps = 100001
+	time_steps = 1000001
 	# Run training
 	main(time_steps)
 	#

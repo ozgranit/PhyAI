@@ -10,6 +10,18 @@ from datetime import datetime
 """this file holds all data preparation methods for data given as a csv file
 	NOTICE: this module is only meant to be used for training a NN for regression"""
 
+FEATURE_LIST = ['edge_length_prune', 'longest_branch', 'ntaxa_prunned_prune', 'pdist_average_pruned_prune',
+                'tbl_pruned_prune', 'parsimony_pruned_prune',
+                'longest_pruned_prune', 'ntaxa_remaining_prune', 'pdist_average_remaining_prune', 'tbl_remaining_prune',
+                'parsimony_remaining_prune',
+                'longest_remaining_prune', 'orig_ds_tbl', 'edge_length_rgft', 'ntaxa_prunned_rgft',
+                'pdist_average_pruned_rgft', 'tbl_pruned_rgft',
+                'parsimony_pruned_rgft', 'longest_pruned_rgft', 'ntaxa_remaining_rgft', 'pdist_average_remaining_rgft',
+                'tbl_remaining_rgft',
+                'parsimony_remaining_rgft', 'longest_remaining_rgft', 'topology_dist_between_rgft',
+                'tbl_dist_between_rgft',
+                'res_tree_edge_length_rgft', 'res_tree_tbl_rgft']
+
 
 def split_test_train(p=0.2, file_path=r"dirpath\learning_subset_1000ds.csv"):
 	# p = precent of data to use as Test
@@ -25,15 +37,17 @@ def split_test_train(p=0.2, file_path=r"dirpath\learning_subset_1000ds.csv"):
 
 	# reads 100000 lines every time, to handle large csv files
 	for chunk in pd.read_csv(file_path, chunksize=200000):
-
 		train, test = train_test_split(chunk, test_size=p)
-		train.to_csv(trainfilename, mode='a', header=False)
-		test.to_csv(testfilename, mode='a', header=False)
+		train.to_csv(trainfilename, mode='a', header=False, index=False)
+		test.to_csv(testfilename, mode='a', header=False, index=False)
 
 
 def handle_row(row):
-	x = row[6:-1]  # remove label and first columns which aren't attributes
+	# was modified to handle "learning_all_moves_step1.csv", will not work on other files
+	x = row[:-1]  # remove label and first columns which aren't attributes
 	y = row[-1]  # take only label
+	# replace '' with '0'
+	x = ['0' if a == '' else a for a in x]
 	# we want to return numbers not strings, small nums so float64
 	x = np.array(x, dtype=np.float64)
 	y = np.array(y, dtype=np.float64)
@@ -96,6 +110,33 @@ def get_test_data():
 			yield x, y
 
 
+def clean_all_step_file():
+	# method for cleaning the 12 gb file
+	# to be called once, after extraction
+	new_file = r'dirpath\new_set.csv'
+	file_path = r'dirpath\learning_all_moves_step1.csv'
+
+	if not os.path.isfile(file_path):
+		print("No learning_all_moves_step1.csv found in dirpath")
+		exit(0)
+
+	# remove old files
+	if os.path.isfile(new_file):
+		os.remove(new_file)
+
+	# save header only once to new csv
+	first_save = True
+	for chunk in pd.read_csv(file_path, chunksize=200000):
+		for column in chunk:
+			if not(column == 'd_ll_merged' or column in FEATURE_LIST):
+				chunk.drop(column, axis=1, inplace=True)
+		if first_save:
+			chunk.to_csv(new_file, mode='a', header=True, index=False)
+			first_save = False
+		else:
+			chunk.to_csv(new_file, mode='a', header=False, index=False)
+
+
 def main():
 	file_path = r"dirpath\learning_subset_1000ds.csv"
 	file_path = r'dirpath\Training_set.csv'
@@ -109,4 +150,4 @@ def main():
 
 
 if __name__ == '__main__':
-	main()
+	clean_all_step_file()

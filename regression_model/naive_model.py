@@ -42,7 +42,7 @@ def test_naive_model():
 
 	for x, y in get_test_data():
 		loss = L1Loss(val, y)
-		TestLoss.append(np.log(loss.item()))
+		TestLoss.append(loss.item())
 	return np.mean(TestLoss)
 
 

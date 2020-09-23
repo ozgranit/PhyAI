@@ -7,7 +7,7 @@ from naive_model import test_naive_model
 import numpy as np
 
 BATCH_SIZE = 32*2
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 1e-5
 
 
 def main(time_steps):

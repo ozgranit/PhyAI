@@ -66,7 +66,7 @@ def lnn_learning(
 	# TestLoss[1] is test lost val, TestLoss[0] is test lost time_step
 	# TrainLoss holds the average loss of last 100 time_steps
 	start, TrainLoss, TestLoss = load_model_and_loss(N)
-	last_100_train_loss = []  # list of length up to 100, will be lost in saving and loading
+	last_1000_train_loss = []  # list of length up to 1000, will be lost in saving and loading
 	################################
 
 	# Loss and Optimizer
@@ -95,7 +95,7 @@ def lnn_learning(
 		# Forward
 		predictions = N(x_train.float())
 		loss = criterion(predictions, labels)
-		last_100_train_loss.append(np.log(loss.item()))
+		last_1000_train_loss.append(loss.item())
 
 		# Backward + Optimize
 		loss.backward()
@@ -110,9 +110,9 @@ def lnn_learning(
 		##########################
 		# STATISTICS AND LOGGING #
 		##########################
-		if len(last_100_train_loss) >= 100:
-			TrainLoss.append(np.mean(last_100_train_loss))
-			last_100_train_loss = []
+		if len(last_1000_train_loss) >= 1000:
+			TrainLoss.append(np.mean(last_1000_train_loss))
+			last_1000_train_loss = []
 
 		if t % CALC_TEST_EVERY_N_STEPS == 0 and t > 1:
 			TestLoss[0].append(t)

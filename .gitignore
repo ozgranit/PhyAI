@@ -14,3 +14,4 @@ regression_model/dirpath/learning_all_moves_step1.zip
 regression_model/dirpath/sample.csv
 *.csv
 *.csv
+*.csv

@@ -14,8 +14,8 @@ def plot_loss(TrainLoss, TestLoss=None):
 	# plot will work with or without Testloss
 	plt.clf()
 	plt.xlabel('Steps')
-	plt.ylabel('Log-L1Loss, averaged over 100 steps')
-	plt.plot(range(0, 100*len(TrainLoss), 100), TrainLoss, label="Train-loss")
+	plt.ylabel('L1Loss, averaged over 1000 steps')
+	plt.plot(range(0, 1000*len(TrainLoss), 1000), TrainLoss, label="Train-loss")
 	if TestLoss is not None:
 		plt.plot(TestLoss[0], TestLoss[1], 'rx',  label="Test-loss")
 	plt.legend()
@@ -34,7 +34,7 @@ def test_model(model):
 
 			predictions = model(x.float())
 			loss = criterion(predictions, y)
-			TestLoss.append(np.log(loss.item()))
+			TestLoss.append(loss.item())
 	return np.mean(TestLoss)
 
 
@@ -52,7 +52,7 @@ def load_model_and_loss(model):
 	if os.path.isfile(TRAIN_LOSS_FILE):
 		with open(TRAIN_LOSS_FILE, 'rb') as f:
 			TrainLoss = pickle.load(f)
-			start = 100*len(TrainLoss)
+			start = 1000*len(TrainLoss)
 			print('Load %s ...' % TRAIN_LOSS_FILE)
 
 	TEST_LOSS_FILE = 'TestLoss.pkl'

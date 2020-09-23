@@ -15,3 +15,5 @@ regression_model/dirpath/sample.csv
 *.csv
 *.csv
 *.csv
+regression_model/dirpath/clean_learning_all_moves_step1.zip
+*.rar

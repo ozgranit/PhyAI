@@ -44,7 +44,7 @@ def split_test_train(p=0.2, file_path=r"dirpath\learning_subset_1000ds.csv"):
 
 def handle_row(row):
 	# was modified to handle "learning_all_moves_step1.csv", will not work on other files
-	x = row[:-1]  # remove label and first columns which aren't attributes
+	x = row[1:-1]  # remove label and first column which aren't attributes
 	y = row[-1]  # take only label
 	# replace '' with '0'
 	x = ['0' if a == '' else a for a in x]
@@ -128,7 +128,7 @@ def clean_all_step_file():
 	first_save = True
 	for chunk in pd.read_csv(file_path, chunksize=200000):
 		for column in chunk:
-			if not(column == 'd_ll_merged' or column in FEATURE_LIST):
+			if not(column == 'd_ll_merged' or column == 'path' or column in FEATURE_LIST):
 				chunk.drop(column, axis=1, inplace=True)
 		if first_save:
 			chunk.to_csv(new_file, mode='a', header=True, index=False)
@@ -151,3 +151,7 @@ def main():
 
 if __name__ == '__main__':
 	clean_all_step_file()
+	#split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
+	#get_train_batch()
+
+

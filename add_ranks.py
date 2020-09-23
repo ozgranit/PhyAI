@@ -16,7 +16,9 @@ def add_ranks(file_name):
             else:
                 scores_list.append(float(row[-1]))
 
-        ranks = np.argsort(scores_list)
+        order = np.argsort(scores_list)
+        ranks = np.argsort(order)
+        ranks = [(len(ranks)-rank) for rank in ranks]
 
     with open(file_name, "r") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')

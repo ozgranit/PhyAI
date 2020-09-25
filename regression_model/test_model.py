@@ -82,7 +82,17 @@ def test_best_predicted_ranking():
 def best_empirically_ranking(predictions, rankings):
 	bestidx = np.argmin(rankings)
 	order = np.argsort(predictions)
-	return order[bestidx]+1  # to start ranking from 1 not 0
+	model_ranks = np.argsort(order)
+	model_ranks = [(len(model_ranks) - rank) for rank in model_ranks]
+
+	return model_ranks[bestidx]
+
+
+def test_best_empirically_ranking():
+	a = [3.2, 40, 0, 20, -17]
+	b = [3, 1, 4, 2, 5]
+	res = best_empirically_ranking(a, b)
+	assert (res == 1)
 
 
 def handle_file(model, filename):
@@ -93,9 +103,35 @@ def handle_file(model, filename):
 	return res1, res2
 
 
+def add_col_to_csv(old_file, new_file, col, col_headline):
+	reader = csv.reader(open(old_file, 'r'))
+	writer = csv.writer(open(new_file, 'w', newline=''))
+	headers = next(reader)
+	headers.append(col_headline)
+	writer.writerow(headers)
+	for i, row in enumerate(reader):
+		row.append(col[i])
+		writer.writerow(row)
+
+
+def get_results():
+	model = get_model()
+	true_rank_of_best_by_model = []
+	best_tree_rank_by_model = []
+
+	for i in range(1, 6063):
+		filename = "dirpath/results/output" + str(i) + "_ranks.csv"
+		res1, res2 = handle_file(model, filename)
+		true_rank_of_best_by_model.append(res1)
+		best_tree_rank_by_model.append(res2)
+
+	mean1 = np.mean(true_rank_of_best_by_model)
+	mean2 = np.mean(best_tree_rank_by_model)
+	print("The tree the model predicts as best is #{:.2f} (on average)".format(mean1))
+	print("The best tree is ranked #{:.2f} (on average) by the model".format(mean2))
+	return mean1, mean2
+
+
 if __name__ == '__main__':
-	filename = r"dirpath\results\output29_ranks.csv"
-	N = get_model()
-	res = handle_file(N, filename)
+	get_results()
 	print("done")
-	print(res)

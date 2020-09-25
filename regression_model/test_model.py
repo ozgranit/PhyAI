@@ -68,7 +68,8 @@ def get_x_and_ranks(file_name):
 # assumes predictions[i] matches with rankings[i]
 def best_predicted_ranking(predictions, rankings):
 	argmax = np.argmax(predictions)
-	return rankings[argmax]
+	# second return value is the percentile of the result
+	return rankings[argmax], (rankings[argmax]-1)/len(rankings)
 
 
 def test_best_predicted_ranking():
@@ -98,9 +99,9 @@ def test_best_empirically_ranking():
 def handle_file(model, filename):
 	x, ranks = get_x_and_ranks(filename)
 	predictions = model_predict(model, x)
-	res1 = best_predicted_ranking(predictions, ranks)
+	res1, percentile_res1 = best_predicted_ranking(predictions, ranks)
 	res2 = best_empirically_ranking(predictions, ranks)
-	return res1, res2
+	return res1, res2, percentile_res1
 
 
 def add_col_to_csv(old_file, new_file, col, col_headline):
@@ -117,17 +118,21 @@ def add_col_to_csv(old_file, new_file, col, col_headline):
 def get_results():
 	model = get_model()
 	true_rank_of_best_by_model = []
+	precentile_of_best_by_model = []
 	best_tree_rank_by_model = []
 
 	for i in range(1, 6063):
 		filename = "dirpath/results/output" + str(i) + "_ranks.csv"
-		res1, res2 = handle_file(model, filename)
+		res1, res2, percentile_res1 = handle_file(model, filename)
 		true_rank_of_best_by_model.append(res1)
+		precentile_of_best_by_model.append(percentile_res1)
 		best_tree_rank_by_model.append(res2)
 
 	mean1 = np.mean(true_rank_of_best_by_model)
 	mean2 = np.mean(best_tree_rank_by_model)
+	per = np.mean(precentile_of_best_by_model)
 	print("The tree the model predicts as best is #{:.2f} (on average)".format(mean1))
+	print("The tree the model predicts as best is at the top %{:.2f} (on average)".format(per*100))
 	print("The best tree is ranked #{:.2f} (on average) by the model".format(mean2))
 	return mean1, mean2
 

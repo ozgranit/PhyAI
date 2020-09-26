@@ -8,10 +8,8 @@ import torch.nn as nn
 
 import matplotlib.pyplot as plt
 from prepare_data import get_train_batch, get_test_data
-
-classfication = True
-num_of_classes = 100
-
+from oz_main import classfication
+from oz_main import num_of_classes
 
 
 def plot_loss(TrainLoss, TestLoss=None):

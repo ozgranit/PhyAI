@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from oz_main import classfication
+from oz_main import num_of_classes
 
 """
 class LNN(nn.Module):
@@ -23,6 +25,7 @@ class LNN(nn.Module):
 """
 
 
+
 class LNN(nn.Module):
     # model#2
     def __init__(self, in_features=29, output=1):
@@ -34,10 +37,15 @@ class LNN(nn.Module):
         self.fc3 = nn.Linear(256, 128)
         self.fc4 = nn.Linear(128, output)
 
+        if classfication:
+            self.generator = nn.Linear(128, num_of_classes)
+
     def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
+        if classfication:
+            return self.generator(x)
         return self.fc4(x)
 
 

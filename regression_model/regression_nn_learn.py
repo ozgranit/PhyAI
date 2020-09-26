@@ -12,6 +12,8 @@ import torch.autograd as autograd
 import matplotlib.pyplot as plt
 from prepare_data import get_train_batch, get_test_data
 from lnn_utils import plot_loss, test_model, load_model_and_loss, save_model_and_plot
+from oz_main import classfication
+from oz_main import num_of_classes
 
 
 USE_CUDA = torch.cuda.is_available()
@@ -19,6 +21,9 @@ dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTens
 
 SavedState = namedtuple("SavedState", "state_dict timestep stats")
 print('******* Running on {} *******'.format('CUDA' if USE_CUDA else 'CPU'))
+
+classfication = True
+num_of_classes = 100
 
 
 class Variable(autograd.Variable):
@@ -70,8 +75,13 @@ def lnn_learning(
 	################################
 
 	# Loss and Optimizer
-	criterion = nn.L1Loss()
-	optimizer = optim.SGD(N.parameters(), lr=learning_rate)
+	if classfication:
+		criterion = nn.CrossEntropyLoss()
+		optimizer = optim.Adam(N.parameters(), lr=learning_rate)
+	else:
+		criterion = nn.L1Loss()
+		optimizer = optim.SGD(N.parameters(), lr=learning_rate)
+
 	# every step_size we update new_lr = old_lr*gamma
 	# NOTICE in loading we do NOT load the last lr used, so adjust lr manually before starting
 	#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=(time_steps/10), gamma=0.2)

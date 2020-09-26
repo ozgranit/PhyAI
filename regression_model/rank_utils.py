@@ -1,8 +1,9 @@
-import sys
 import os
 import numpy as np
 import csv
 from csv import reader, writer
+from oz_main import classfication
+from oz_main import num_of_classes
 
 
 def add_ranks(file_name):
@@ -20,6 +21,9 @@ def add_ranks(file_name):
         ranks = np.argsort(order)
         ranks = [(len(ranks)-rank) for rank in ranks]
 
+        if classfication:
+            add_ranks_threshold(ranks, threshold=100)
+
     with open(file_name, "r") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         out = writer(open(file_name[:-4]+"_ranks" + ".csv", "w", newline=''), delimiter=",")
@@ -35,6 +39,12 @@ def add_ranks(file_name):
             out.writerow(row)
     csv_file.close()
     os.remove(csv_file.name)
+
+def add_ranks_threshold(ranks, threshold):
+    for i in range(len(ranks)):
+        if ranks[i] > threshold:
+            ranks[i] = threshold
+
 
 
 def add_ranks_all_files():

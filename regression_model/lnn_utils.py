@@ -9,6 +9,10 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from prepare_data import get_train_batch, get_test_data
 
+classfication = True
+num_of_classes = 100
+
+
 
 def plot_loss(TrainLoss, TestLoss=None):
 	# plot will work with or without Testloss
@@ -26,7 +30,10 @@ def plot_loss(TrainLoss, TestLoss=None):
 # test model on test-set using mean of loss
 def test_model(model):
 	TestLoss = []
-	criterion = nn.L1Loss()
+	if classfication:
+		criterion = nn.CrossEntropyLoss()
+	else:
+		criterion = nn.L1Loss()
 	with torch.no_grad():
 		for x, y in get_test_data():
 			x = torch.tensor(x, dtype=torch.float32)

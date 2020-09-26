@@ -10,6 +10,10 @@ BATCH_SIZE = 32*2
 LEARNING_RATE = 1e-5
 
 
+classfication = True
+num_of_classes = 100
+
+
 def main(time_steps):
 
 	TrainLoss, TestLoss = lnn_learning(

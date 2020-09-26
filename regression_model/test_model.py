@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from prepare_data import get_train_batch, FEATURE_LIST
 from lnn_utils import load_model_and_loss
 from regression_model import LNN
+from oz_main import classfication
+from oz_main import num_of_classes
 
 USE_CUDA = torch.cuda.is_available()
 
@@ -36,6 +38,35 @@ def model_predict(model, x):
 	predictions = predictions.numpy()
 	predictions = [predictions[i][0] for i in range(len(predictions))]
 	return predictions
+
+def model_predict_classification(model, x):
+	with torch.no_grad():
+		x = torch.tensor(x, dtype=torch.float32)
+		predictions = model(x.float())
+	predictions = predictions.argmax(dim=1)	# check with oz about the right dimension here
+	predictions = predictions.numpy()
+	predictions = [predictions[i][0] for i in range(len(predictions))]
+	return predictions
+
+def best_predicted_ranking_classification(predictions, rankings):
+	argmin = np.argmin(predictions)
+	# second return value is the percentile of the result
+	return rankings[argmin], (rankings[argmin]-1)/len(rankings)
+
+def best_empirically_ranking_classification(predictions, rankings):
+	bestidx = np.argmin(rankings)
+	order = np.argsort(predictions)
+	model_ranks = np.argsort(order)
+	return model_ranks[bestidx]
+
+def handle_file_classifcation(model, filename):
+	x, ranks = get_x_and_ranks(filename)
+	predictions = model_predict_classification(model, x)
+	res1, percentile_res1 = best_predicted_ranking_classification(predictions, ranks)
+	res2 = best_empirically_ranking_classification(predictions, ranks)
+	return res1, res2, percentile_res1
+
+
 
 
 def handle_row(row):
@@ -123,7 +154,10 @@ def get_results():
 
 	for i in range(1, 6063):
 		filename = "dirpath/results/output" + str(i) + "_ranks.csv"
-		res1, res2, percentile_res1 = handle_file(model, filename)
+		if classfication:
+			res1, res2, percentile_res1 = handle_file_classifcation(model, filename)
+		else:
+			res1, res2, percentile_res1 = handle_file(model, filename)
 		true_rank_of_best_by_model.append(res1)
 		precentile_of_best_by_model.append(percentile_res1)
 		best_tree_rank_by_model.append(res2)

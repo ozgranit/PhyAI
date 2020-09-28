@@ -24,12 +24,12 @@ def plot_loss(TrainLoss, TestLoss=None):
 
 
 # test model on test-set using mean of loss
-def test_model(model, num_of_files):
+def test_model(model):
 	TestLoss = []
 	criterion = nn.CrossEntropyLoss()
 
 	with torch.no_grad():
-		for x, y in get_test_data(num_of_files):
+		for x, y in get_test_data():
 			x = torch.tensor(x, dtype=torch.float32)
 			y = torch.tensor(y, dtype=torch.float32)
 

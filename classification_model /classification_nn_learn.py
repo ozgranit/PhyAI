@@ -41,8 +41,6 @@ def weights_init_uniform_rule(m):
 
 
 def lnn_learning(
-		num_of_files_train,
-		num_of_files_test,
 		lnn,
 		time_steps,
 		learning_rate=1e-3,
@@ -87,7 +85,7 @@ def lnn_learning(
 		###################
 		# ACTUAL TRAINING #
 		###################
-		x_train, labels = get_train_batch(num_of_files_train, batch_size=batch_size)
+		x_train, labels = get_train_batch(batch_size=batch_size)
 		# not sure which one will work #1 or #2
 		# 1:
 		x_train = torch.tensor(x_train, dtype=torch.float32)
@@ -98,7 +96,7 @@ def lnn_learning(
 
 		# Forward
 		predictions = N(x_train.float())
-		loss = criterion(predictions, labels)
+		loss = criterion(predictions, labels.squeeze(1).type(torch.LongTensor)-1)# -1 cause ranks should be [0,num_classes]
 		last_1000_train_loss.append(loss.item())
 
 		# Backward + Optimize
@@ -120,7 +118,7 @@ def lnn_learning(
 
 		if t % CALC_TEST_EVERY_N_STEPS == 0 and t > 1:
 			TestLoss[0].append(t)
-			TestLoss[1].append(test_model(N, num_of_files_test))
+			TestLoss[1].append(test_model(N))
 
 		if t % LOG_EVERY_N_STEPS == 0 and t > 1:
 			#print(scheduler.get_lr())

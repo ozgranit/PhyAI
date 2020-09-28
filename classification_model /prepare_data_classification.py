@@ -5,7 +5,7 @@ from ete3 import *
 import random
 from sklearn.model_selection import train_test_split
 from datetime import datetime
-from rank_utils_classification import csv_split, add_ranks_all_files
+from rank_utils_classification import csv_split, add_ranks_all_files, create_big_ranked_file_from_learning_all_moves_step1
 from pathlib import Path
 
 """this file holds all data preparation methods for data given as a csv file
@@ -23,9 +23,11 @@ FEATURE_LIST = ['edge_length_prune', 'longest_branch', 'ntaxa_prunned_prune', 'p
                 'tbl_dist_between_rgft',
                 'res_tree_edge_length_rgft', 'res_tree_tbl_rgft']
 
-dirpath_folder = Path("../dirpath")
+parent_path = Path().resolve().parent
 
-def split_test_train(p=0.2, file_path=r"..\dirpath\learning_subset_1000ds.csv"):
+dirpath_folder = parent_path / 'dirpath'
+
+def split_test_train(p=0.2, file_path=dirpath_folder / 'big_file_ranked.csv'):
 	# p = precent of data to use as Test
 	# saves TWO csv files 'Training_set' and 'Test_set'
 	random.seed(datetime.now())
@@ -59,7 +61,7 @@ def handle_row(row):
 	return x, y
 
 
-def get_train_batch(num_of_files, file_path=r'..\dirpath\Training_set.csv', batch_size=32):
+def get_train_batch(file_path=dirpath_folder / 'Training_set.csv', batch_size=32):
 	# assumes train data in file_path matches the format as saved by split_test_train() uses extra csv file because
 	# pandas is very slow, using f.open and f.seek are much faster, later i use csv reader to read the sampled data.
 	# this is done to avoid reading entire trainingfile=file_path to memory
@@ -75,9 +77,6 @@ def get_train_batch(num_of_files, file_path=r'..\dirpath\Training_set.csv', batc
 	resultfile = open(samplefilename, 'w')
 
 	for i in range(batch_size):
-		file_num = random.randrange(num_of_files)
-		# file_path = r'..\dirpath\class_results\train\output'+str(file_num)+'_ranks'
-		file_path = dirpath_folder / "class_results/train/output" / (str(file_num)+"_ranks")
 		filesize = os.stat(file_path).st_size  # size of the specific file
 		offset = random.randrange(filesize)
 
@@ -104,13 +103,11 @@ def get_train_batch(num_of_files, file_path=r'..\dirpath\Training_set.csv', batc
 	return np.vstack(x_list), np.vstack(y_list)
 
 
-def get_test_data(num_of_files):
+def get_test_data():
 	# generator function, to be used iteratively
 	# example: 'for x,y in get_test_data():'
-
-	for file_num in range(num_of_files):
 		# filename = r'..\dirpath\class_results\test\output'+str(file_num)+'_ranks'
-		filename = dirpath_folder / "class_results/test/output" / (str(file_num)+"_ranks")
+		filename = dirpath_folder / "Test_set.csv"
 		with open(filename, "r") as csvfile:
 			datareader = csv.reader(csvfile)
 			row = next(datareader)  # yield the header row
@@ -164,16 +161,11 @@ def main():
 
 if __name__ == '__main__':
 	# clean_all_step_file()
-	# # split_test_train(file_path="../dirpath/learning_all_moves_step1.csv")
-	# split_test_train(file_path=dirpath_folder / 'learning_all_moves_step1.csv')
 
-	# csv_split(file_name="../dirpath/Training_set.csv")
-	csv_split(file_name=dirpath_folder / 'Training_set.csv')
+	#create_big_ranked_file_from_learning_all_moves_step1()
+	split_test_train()
 
-	add_ranks_all_files()
-	# csv_split(file_name="../dirpath/Test_set.csv", test=True)
-	csv_split(file_name=dirpath_folder / 'Test_set.csv')
-	add_ranks_all_files(test=True)
+
 
 
 #get_train_batch()

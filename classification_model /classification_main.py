@@ -11,11 +11,9 @@ LEARNING_RATE = 1e-5
 
 
 
-def main(time_steps, num_of_files_train, num_of_files_test):
+def main(time_steps):
 
 	TrainLoss, TestLoss = lnn_learning(
-		num_of_files_train,
-		num_of_files_test,
 		lnn=LNN,
 		time_steps=time_steps,
 		learning_rate=LEARNING_RATE,

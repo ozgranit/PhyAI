@@ -30,11 +30,11 @@ def test_model(model):
 
 	with torch.no_grad():
 		for x, y in get_test_data():
-			x = torch.tensor(x, dtype=torch.float32)
-			y = torch.tensor(y, dtype=torch.float32)
+			x = torch.Tensor(x)
+			y = torch.Tensor([int(y)])
 
 			predictions = model(x.float())
-			loss = criterion(predictions, y)
+			loss = criterion(predictions.unsqueeze(0).type(torch.float), y.type(torch.long)-1)
 			TestLoss.append(loss.item())
 	return np.mean(TestLoss)
 

@@ -162,7 +162,7 @@ def main():
 if __name__ == '__main__':
 	# clean_all_step_file()
 
-	#create_big_ranked_file_from_learning_all_moves_step1()
+	create_big_ranked_file_from_learning_all_moves_step1()
 	split_test_train()
 
 

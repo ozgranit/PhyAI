@@ -5,11 +5,16 @@ import pickle
 import numpy as np
 
 import torch
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 from prepare_data import get_train_batch, FEATURE_LIST
 from lnn_utils import load_model_and_loss
 from regression_model import LNN
+
+parent_path = Path().resolve().parent
+
+dirpath_folder = parent_path / 'dirpath'
 
 USE_CUDA = torch.cuda.is_available()
 
@@ -34,7 +39,6 @@ def model_predict(model, x):
 		x = torch.tensor(x, dtype=torch.float32)
 		predictions = model(x.float())
 	predictions = predictions.numpy()
-	predictions = [predictions[i][0] for i in range(len(predictions))]
 	return predictions
 
 
@@ -122,7 +126,7 @@ def get_results():
 	best_tree_rank_by_model = []
 
 	for i in range(1, 6063):
-		filename = "dirpath/results/output" + str(i) + "_ranks.csv"
+		filename = dirpath_folder / ("results/output" + str(i) + "_ranks.csv")
 		res1, res2, percentile_res1 = handle_file(model, filename)
 		true_rank_of_best_by_model.append(res1)
 		precentile_of_best_by_model.append(percentile_res1)

@@ -53,7 +53,6 @@ def model_predict_classification(model, x):
 		predictions = model(x.float())
 	predictions = predictions.argmax(dim=1)	# check with oz about the right dimension here
 	predictions = predictions.numpy()
-	predictions = [predictions[i][0] for i in range(len(predictions))]
 	return predictions
 
 def best_predicted_ranking_classification(predictions, rankings):

@@ -11,6 +11,15 @@ from prepare_data_classification import get_train_batch, FEATURE_LIST
 from lnn_utils import load_model_and_loss
 from classification_model import LNN
 
+from pathlib import Path
+
+
+parent_path = Path().resolve().parent
+
+dirpath_folder = parent_path / 'dirpath'
+
+
+
 
 USE_CUDA = torch.cuda.is_available()
 
@@ -64,8 +73,6 @@ def handle_file_classifcation(model, filename):
 	res1, percentile_res1 = best_predicted_ranking_classification(predictions, ranks)
 	res2 = best_empirically_ranking_classification(predictions, ranks)
 	return res1, res2, percentile_res1
-
-
 
 
 def handle_row(row):
@@ -152,7 +159,7 @@ def get_results():
 	best_tree_rank_by_model = []
 
 	for i in range(1, 6063):
-		filename = "dirpath/results/output" + str(i) + "_ranks.csv"
+		filename = dirpath_folder / ("results/output" + str(i) + "_ranks.csv")
 		res1, res2, percentile_res1 = handle_file_classifcation(model, filename)
 		true_rank_of_best_by_model.append(res1)
 		precentile_of_best_by_model.append(percentile_res1)

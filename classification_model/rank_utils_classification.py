@@ -7,11 +7,11 @@ from pathlib import Path
 
 parent_path = Path().resolve().parent
 
-dirpath_folder = parent_path / 'dirpath'
+data_folder = parent_path / 'data'
 
-def csv_split(file_name= dirpath_folder / 'learning_all_moves_step1.csv'):
+def csv_split(file_name=data_folder / 'learning_all_moves_step1.csv'):
     index = 1
-    out_file_path = dirpath_folder / ('class_results/output'+str(index)+'.csv')
+    out_file_path = data_folder / ('class_results/output' + str(index) + '.csv')
     out_file = open(out_file_path, "w", newline='')
     out = writer(out_file, delimiter=",")
     current_value = "headlines"
@@ -38,7 +38,7 @@ def csv_split(file_name= dirpath_folder / 'learning_all_moves_step1.csv'):
                     current_value = row[index_of_path_column]
                     index += 1
                     out_file.close()
-                    out_file_path = dirpath_folder / ('class_results/output' + str(index) + '.csv')
+                    out_file_path = data_folder / ('class_results/output' + str(index) + '.csv')
                     out_file = open(out_file_path, "w", newline='')
                     out = writer(out_file, delimiter=",")
 
@@ -88,7 +88,7 @@ def add_ranks_all_files(output_file_path):
     out_file = open(output_file_path, "w", newline='')
     out = writer(out_file, delimiter=",")
 
-    file_name = dirpath_folder / ('class_results/output1.csv')
+    file_name = data_folder / ('class_results/output1.csv')
     with open(file_name, "r") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
@@ -99,8 +99,8 @@ def add_ranks_all_files(output_file_path):
 
     i = 1
     while True:
-        # file_name = "../dirpath/class_results/train/output" + str(i) + ".csv"
-        file_name = dirpath_folder / ('class_results/output'+str(i)+'.csv')
+        # file_name = "../data/class_results/train/output" + str(i) + ".csv"
+        file_name = data_folder / ('class_results/output' + str(i) + '.csv')
         try:
             add_ranks(file_name, out)
             i += 1
@@ -111,7 +111,7 @@ def add_ranks_all_files(output_file_path):
 
 def create_big_ranked_file_from_learning_all_moves_step1():
     csv_split()
-    add_ranks_all_files(dirpath_folder / 'big_file_ranked.csv')
+    add_ranks_all_files(data_folder / 'big_file_ranked.csv')
 
 
 

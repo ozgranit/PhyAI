@@ -10,7 +10,7 @@ from prepare_data_classification import handle_row, get_test_data
 def naive_model():
 	# return the mean of the train set
 	Label_lst = []
-	filename = r'dirpath\Training_set.csv'
+	filename = r'data\Training_set.csv'
 
 	with open(filename, "r") as csvfile:
 		datareader = csv.reader(csvfile)

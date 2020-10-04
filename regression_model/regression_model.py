@@ -20,8 +20,8 @@ class LNN(nn.Module):
         x = F.relu(self.fc3(x))
         return self.fc4(x)
 
-"""
 
+"""
 
 class LNN(nn.Module):
     # model#2

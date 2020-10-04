@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 from prepare_data import handle_row, get_test_data
-
+from pathlib import Path
 
 # meant to be used as a reference point for the effectiveness of other models
 # this is the most naive regression solution possible
@@ -10,7 +10,8 @@ from prepare_data import handle_row, get_test_data
 def naive_model():
 	# return the mean of the train set
 	Label_lst = []
-	filename = r'dirpath\Training_set.csv'
+	parent_path = Path().resolve().parent
+	filename = parent_path / 'data/Training_set.csv'
 
 	with open(filename, "r") as csvfile:
 		datareader = csv.reader(csvfile)

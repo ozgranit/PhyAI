@@ -25,16 +25,16 @@ FEATURE_LIST = ['edge_length_prune', 'longest_branch', 'ntaxa_prunned_prune', 'p
 
 parent_path = Path().resolve().parent
 
-dirpath_folder = parent_path / 'dirpath'
+data_folder = parent_path / 'data'
 
-def split_test_train(p=0.2, file_path=dirpath_folder / 'big_file_ranked.csv'):
+def split_test_train(p=0.2, file_path=data_folder / 'big_file_ranked.csv'):
 	# p = precent of data to use as Test
 	# saves TWO csv files 'Training_set' and 'Test_set'
 	random.seed(datetime.now())
-	# testfilename = r'..\dirpath\Test_set.csv'
-	testfilename = dirpath_folder / "Test_set.csv"
-	# trainfilename = r'..\dirpath\Training_set.csv'
-	trainfilename = dirpath_folder / "Training_set.csv"
+	# testfilename = r'..\data\Test_set.csv'
+	testfilename = data_folder / "Test_set.csv"
+	# trainfilename = r'..\data\Training_set.csv'
+	trainfilename = data_folder / "Training_set.csv"
 
 	# remove old files
 	if os.path.isfile(testfilename):
@@ -61,12 +61,12 @@ def handle_row(row):
 	return x, y
 
 
-def get_train_batch(file_path=dirpath_folder / 'Training_set.csv', batch_size=32):
+def get_train_batch(file_path=data_folder / 'Training_set.csv', batch_size=32):
 	# assumes train data in file_path matches the format as saved by split_test_train() uses extra csv file because
 	# pandas is very slow, using f.open and f.seek are much faster, later i use csv reader to read the sampled data.
 	# this is done to avoid reading entire trainingfile=file_path to memory
-	# samplefilename = r'..\dirpath\sample.csv'
-	samplefilename = dirpath_folder / "sample.csv"
+	# samplefilename = r'..\data\sample.csv'
+	samplefilename = data_folder / "sample.csv"
 	# remove old files
 	if os.path.isfile(samplefilename):
 		os.remove(samplefilename)
@@ -106,8 +106,8 @@ def get_train_batch(file_path=dirpath_folder / 'Training_set.csv', batch_size=32
 def get_test_data():
 	# generator function, to be used iteratively
 	# example: 'for x,y in get_test_data():'
-		# filename = r'..\dirpath\class_results\test\output'+str(file_num)+'_ranks'
-		filename = dirpath_folder / "Test_set.csv"
+		# filename = r'..\data\class_results\test\output'+str(file_num)+'_ranks'
+		filename = data_folder / "Test_set.csv"
 		with open(filename, "r") as csvfile:
 			datareader = csv.reader(csvfile)
 			row = next(datareader)  # yield the header row
@@ -121,13 +121,13 @@ def get_test_data():
 def clean_all_step_file():
 	# method for cleaning the 12 gb file
 	# to be called once, after extraction
-	# new_file = r'..\dirpath\new_set.csv'
-	new_file = dirpath_folder / 'new_set.csv'
-	# file_path = '../dirpath/learning_all_moves_step1.csv'
-	file_path = dirpath_folder / 'learning_all_moves_step1.csv'
+	# new_file = r'..\data\new_set.csv'
+	new_file = data_folder / 'new_set.csv'
+	# file_path = '../data/learning_all_moves_step1.csv'
+	file_path = data_folder / 'learning_all_moves_step1.csv'
 
 	if not os.path.isfile(file_path):
-		print("No learning_all_moves_step1.csv found in dirpath")
+		print("No learning_all_moves_step1.csv found in 'data' folder")
 		exit(0)
 
 	# remove old files
@@ -148,8 +148,8 @@ def clean_all_step_file():
 			chunk.to_csv(new_file, mode='a', header=False, index=False)
 
 def main():
-	file_path = r"..\dirpath\learning_subset_1000ds.csv"
-	file_path = r'..\dirpath\Training_set.csv'
+	file_path = r"..\data\learning_subset_1000ds.csv"
+	file_path = r'..\data\Training_set.csv'
 
 	# x, y = get_train_batch(file_path, 64)
 	for x, y in get_test_data():

@@ -37,10 +37,10 @@ def main(time_steps):
 
 
 if __name__ == '__main__':
-	# split_test_train(file_path=r"dirpath\model to overfit.csv")
-	# split_test_train(p=0.5, file_path=r"dirpath\example-oz.csv")
-	# split_test_train(file_path=r"dirpath\learning_subset_1000ds.csv")
-	# split_test_train(file_path=r"dirpath\learning_all_moves_step1.csv")
+	# split_test_train(file_path=r"data\model to overfit.csv")
+	# split_test_train(p=0.5, file_path=r"data\example-oz.csv")
+	# split_test_train(file_path=r"data\learning_subset_1000ds.csv")
+	# split_test_train(file_path=r"data\learning_all_moves_step1.csv")
 
 	time_steps = 1000001
 	# Run training

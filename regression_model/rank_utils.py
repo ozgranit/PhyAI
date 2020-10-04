@@ -3,6 +3,11 @@ import os
 import numpy as np
 import csv
 from csv import reader, writer
+from pathlib import Path
+
+parent_path = Path().resolve().parent
+
+data_folder = parent_path / 'data'
 
 
 def add_ranks(file_name):
@@ -40,7 +45,7 @@ def add_ranks(file_name):
 def add_ranks_all_files():
     i = 1
     while True:
-        file_name = "dirpath/results/output" + str(i) + ".csv"
+        file_name = data_folder / ('results/output' + str(i) + '.csv')
         try:
             add_ranks(file_name)
             i += 1
@@ -51,10 +56,10 @@ def add_ranks_all_files():
 
 def csv_split():
     # file_name = "learning_subset_1000ds.csv"
-    file_name = "dirpath/learning_all_moves_step1.csv"
+    file_name = "..\data/learning_all_moves_step1.csv"
 
     index = 1
-    out = writer(open("dirpath/results/output" + str(index) + ".csv", "w", newline=''), delimiter=",")
+    out = writer(open("../data/results/output" + str(index) + ".csv", "w", newline=''), delimiter=",")
     current_value = "headlines"
 
     index_of_path_column = 0  # 3  # notice change in index to fit new clean file (7G)
@@ -75,7 +80,7 @@ def csv_split():
                 else:
                     current_value = row[index_of_path_column]
                     index += 1
-                    out = writer(open("dirpath/results/output" + str(index) + ".csv", "w", newline=''), delimiter=",")
+                    out = writer(open("../data/results/output" + str(index) + ".csv", "w", newline=''), delimiter=",")
                     out.writerow(headlines)
                     out.writerow(row)
 

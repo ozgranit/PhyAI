@@ -21,7 +21,7 @@ class LNN(nn.Module):
         return self.fc4(x)
 
 
-"""
+
 
 class LNN(nn.Module):
     # model#2
@@ -41,7 +41,7 @@ class LNN(nn.Module):
         return self.fc4(x)
 
 
-"""
+
 
 class LNN(nn.Module):
     # model#3
@@ -62,7 +62,7 @@ class LNN(nn.Module):
         x = F.leaky_relu(self.fc4(x))
         return self.fc5(x)
 
-
+"""
 
 class LNN(nn.Module):
     # model#4
@@ -83,7 +83,7 @@ class LNN(nn.Module):
         x = F.relu(self.fc4(x))
         return self.fc5(x)
 
-
+"""
 class LNN(nn.Module):
 	# simplest model
     def __init__(self, in_features, output):

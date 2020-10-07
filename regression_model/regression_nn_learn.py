@@ -71,13 +71,13 @@ def lnn_learning(
 
 	# Loss and Optimizer
 	criterion = nn.L1Loss()
-	optimizer = optim.SGD(N.parameters(), lr=learning_rate)
+	optimizer = optim.Adam(N.parameters(), lr=learning_rate)  # optim.SGD(N.parameters(), lr=learning_rate)
 	# every step_size we update new_lr = old_lr*gamma
 	# NOTICE in loading we do NOT load the last lr used, so adjust lr manually before starting
 	#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=(time_steps/10), gamma=0.2)
 
-	LOG_EVERY_N_STEPS = 20000
-	CALC_TEST_EVERY_N_STEPS = 500000
+	LOG_EVERY_N_STEPS = 5000
+	CALC_TEST_EVERY_N_STEPS = 1000000
 
 	for t in range(start, time_steps):
 		###################

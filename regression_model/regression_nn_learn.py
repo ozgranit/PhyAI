@@ -76,8 +76,8 @@ def lnn_learning(
 	# NOTICE in loading we do NOT load the last lr used, so adjust lr manually before starting
 	#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=(time_steps/10), gamma=0.2)
 
-	LOG_EVERY_N_STEPS = 5000
-	CALC_TEST_EVERY_N_STEPS = 1000000
+	LOG_EVERY_N_STEPS = 100000
+	CALC_TEST_EVERY_N_STEPS = 500000
 
 	for t in range(start, time_steps):
 		###################

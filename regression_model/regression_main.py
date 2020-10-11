@@ -41,7 +41,7 @@ if __name__ == '__main__':
 	# split_test_train(file_path=r"..\data\learning_subset_1000ds.csv")
 	#split_test_train(file_path=r"..\data\learning_all_moves_step1.csv")
 
-	time_steps = 1500001
+	time_steps = 200001
 	# Run training
 	main(time_steps)
 	#

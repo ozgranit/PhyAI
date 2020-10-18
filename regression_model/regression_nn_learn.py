@@ -46,7 +46,6 @@ def lnn_learning(
 		learning_rate=1e-3,
 		batch_size=32,
 ):
-	STATS_FILE_NAME = 'statistics.pkl'
 
 	###############
 	# BUILD MODEL #

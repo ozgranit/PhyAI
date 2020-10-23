@@ -3,8 +3,8 @@ from reinforcement_dqn_learn import dqn_learning
 from dqn_utils import LinearSchedule, plot_loss
 
 BATCH_SIZE = 32
-LEARNING_RATE = 1e-5
-STEPS_LIMITS = 7
+LEARNING_RATE = 1e-3
+STEPS_LIMITS = 100
 NUM_ACTIONS = 2*2
 INPUT_SIZE = 2*2
 
@@ -29,6 +29,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 10001
+	time_steps = 100001
 	# Run training
 	main(time_steps)

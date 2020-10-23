@@ -3,14 +3,14 @@ from reinforcement_dqn_learn import dqn_learning
 from dqn_utils import LinearSchedule, plot_loss
 
 BATCH_SIZE = 32
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 1e-5
 STEPS_LIMITS = 100
 NUM_ACTIONS = 2*2
 INPUT_SIZE = 2*2
 
 
 def main(time_steps):
-	exploration_schedule = LinearSchedule(100000, 0.1)
+	exploration_schedule = LinearSchedule(10, 0.1)
 
 	TrainReward = dqn_learning(
 		q_func=DQN,

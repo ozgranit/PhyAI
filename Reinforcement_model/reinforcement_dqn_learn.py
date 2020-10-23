@@ -112,7 +112,7 @@ def dqn_learning(
 		# Backward + Optimize
 		loss.backward()
 		optimizer.step()
-		optimizer.zero_grad() 
+		optimizer.zero_grad()
 
 		# advance to next state
 		state = next_state

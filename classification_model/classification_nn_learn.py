@@ -96,7 +96,7 @@ def lnn_learning(
 
 		# Forward
 		predictions = N(x_train.float())
-		loss = criterion(predictions, labels.squeeze(1).type(torch.LongTensor)-1)# -1 cause ranks should be [0,num_classes]
+		loss = criterion(predictions, labels.squeeze(1).type(torch.LongTensor))# -1 for normal ranking(already like that in precentiles) cause ranks should be [0,num_classes]
 		last_1000_train_loss.append(loss.item())
 
 		# Backward + Optimize

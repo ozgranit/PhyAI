@@ -1,16 +1,19 @@
 import csv
 import numpy as np
 from prepare_data_classification import handle_row, get_test_data
+from pathlib import Path
 
 
 # meant to be used as a reference point for the effectiveness of other models
 # this is the most naive regression solution possible
+parent_path = Path().resolve().parent
 
+dirpath_folder = parent_path / 'dirpath'
 
 def naive_model():
 	# return the mean of the train set
 	Label_lst = []
-	filename = r'dirpath\Training_set.csv'
+	filename = dirpath_folder/ 'Training_set.csv'
 
 	with open(filename, "r") as csvfile:
 		datareader = csv.reader(csvfile)

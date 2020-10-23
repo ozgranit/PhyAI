@@ -60,7 +60,8 @@ def add_ranks(file_name, out_writer):
         order = np.argsort(scores_list)
         ranks = np.argsort(order)
         ranks = [(len(ranks)-rank) for rank in ranks]
-        add_ranks_threshold(ranks, threshold=num_of_classes)
+        #add_ranks_threshold(ranks, threshold=num_of_classes)
+        add_ranks_precentiles(ranks)
         csv_file.close()
 
     with open(file_name, "r") as csv_file:
@@ -81,6 +82,14 @@ def add_ranks_threshold(ranks, threshold):
     for i in range(len(ranks)):
         if ranks[i] > threshold:
             ranks[i] = threshold
+
+def add_ranks_precentiles(ranks):
+    number_of_elements_in_percentile = len(ranks)//num_of_classes+1
+    for i in range(num_of_classes):
+        for j in range(len(ranks)):
+            if i*number_of_elements_in_percentile <= ranks[j] < (i + 1)*number_of_elements_in_percentile:
+                ranks[j] = i
+
 
 
 
@@ -111,11 +120,10 @@ def add_ranks_all_files(output_file_path):
 
 def create_big_ranked_file_from_learning_all_moves_step1():
     csv_split()
-    add_ranks_all_files(dirpath_folder / 'big_file_ranked.csv')
+    add_ranks_all_files(dirpath_folder / 'big_file_ranked_precentile.csv')
 
 
 
 if __name__ == '__main__':
-   csv_split()
-   # add_ranks_all_files()
+  create_big_ranked_file_from_learning_all_moves_step1()
 

@@ -8,6 +8,9 @@ import bio_methods
 
 
 def env_reset():
+	# take new tree from trainning datasets
+	# make tree into matrix
+	# return matrix as vector numpy
 	state = 0
 	return torch.tensor(state)
 

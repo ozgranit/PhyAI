@@ -64,7 +64,7 @@ class LNN(nn.Module):
 
 """
 
-class LNN(nn.Module):
+class DQN(nn.Module):
     # model#4
     def __init__(self, in_features=29, output=1):
         #   Initialize a learning network for testing algorithm

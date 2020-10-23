@@ -1,22 +1,27 @@
-import os
-import sys
-from regression_model import LNN
-from regression_nn_learn import plot_loss, lnn_learning
-from prepare_data import split_test_train
-from naive_model import test_naive_model
-import numpy as np
+from reinforcement_model import DQN
+from reinforcement_dqn_learn import dqn_learning
+from dqn_utils import LinearSchedule
 
-BATCH_SIZE = 32*2
+BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
+STEPS_LIMITS = 7
+NUM_ACTIONS = 20*20
+INPUT_SIZE = 20*20
 
 
 def main(time_steps):
+	exploration_schedule = LinearSchedule(100000, 0.1)
 
-	TrainLoss, TestLoss = lnn_learning(
-		lnn=LNN,
+	TrainReward = dqn_learning(
+		q_func=DQN,
 		time_steps=time_steps,
+		exploration=exploration_schedule,
+		input_size=INPUT_SIZE,
+		num_actions=NUM_ACTIONS,
+		steps_limit=STEPS_LIMITS,
 		learning_rate=LEARNING_RATE,
 		batch_size=BATCH_SIZE,
+		target_update_freq=10000,
 	)
 	naive_loss = test_naive_model()
 	# we don't always bother filling TestLoss
@@ -35,17 +40,16 @@ def main(time_steps):
 	# plot_loss(TrainLoss, TestLoss)
 
 
+def test_LinearSchedule():
+	exploration = LinearSchedule(100000, 0.1)
+	for i in range(0, 130000, 10000):
+		v = exploration.value(i)
+		print(i, v)
+
+
 if __name__ == '__main__':
-	# split_test_train(file_path=r"..\data\model to overfit.csv")
-	# split_test_train(p=0.5, file_path=r"..\data\example-oz.csv")
-	# split_test_train(file_path=r"..\data\learning_subset_1000ds.csv")
-	#split_test_train(file_path=r"..\data\learning_all_moves_step1.csv")
 
 	time_steps = 200001
 	# Run training
-	main(time_steps)
-	#
-	# if os.path.isfile('N_params.pkl'):
-	# 	os.remove('N_params.pkl')
-	# if os.path.isfile('statistics.pkl'):
-	# 	os.remove('statistics.pkl')
+	# main(time_steps)
+	test_LinearSchedule()

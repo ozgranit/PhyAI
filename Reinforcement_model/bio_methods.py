@@ -1,7 +1,10 @@
-import re, os, shutil
+import os
+import re
+import shutil
+from subprocess import Popen, PIPE, STDOUT
+
 import pandas as pd
 from ete3 import Tree, PhyloTree
-from subprocess import Popen, PIPE, STDOUT
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
 # conda install -c bioconda raxml-ng

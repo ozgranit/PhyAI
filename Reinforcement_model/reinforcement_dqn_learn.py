@@ -89,7 +89,7 @@ def dqn_learning(
 	"""problems:
 		1. no replay buffer yet - the training samples aren't iid
 		2. we don't use the finite horizon properly - the state space does not represent how many actions were taken
-		3. loos and optimier mught need to change- common are Huberloss and RMSporp optimizer
+		3. loss and optimier might need to change- common are Huberloss and RMSporp optimizer
 	"""
 	for t in range(start, time_steps):
 		###################
@@ -112,13 +112,13 @@ def dqn_learning(
 		# Backward + Optimize
 		loss.backward()
 		optimizer.step()
-		optimizer.zero_grad()
+		optimizer.zero_grad() 
 
 		# advance to next state
 		state = next_state
 		steps_taken += 1
 		# played max number of steps allowed or at local maxima - start new game
-		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss
+		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss #todo: this line is wrong. find another way to find maximum
 		if steps_taken >= steps_limit or next_state_value < 0:
 			# start over
 			state = env_reset()

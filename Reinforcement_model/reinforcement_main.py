@@ -10,7 +10,7 @@ INPUT_SIZE = 2*2
 
 
 def main(time_steps):
-	exploration_schedule = LinearSchedule(10, 0.1)
+	exploration_schedule = LinearSchedule(100000, 0.05)
 
 	TrainReward = dqn_learning(
 		q_func=DQN,
@@ -29,6 +29,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 100001
+	time_steps = 10001
 	# Run training
 	main(time_steps)

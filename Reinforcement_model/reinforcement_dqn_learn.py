@@ -119,8 +119,8 @@ def dqn_learning(
 		state = next_state
 		steps_taken += 1
 		# played max number of steps allowed or at local maxima - start new game
-		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss #todo: this line is wrong. find another way to find maximum
-		if steps_taken >= steps_limit :#or next_state_value < 0:
+		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss
+		if steps_taken >= steps_limit or next_state_value < 0:
 			# start over
 			state = env_reset()
 			steps_taken = 0

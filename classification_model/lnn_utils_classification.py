@@ -34,7 +34,7 @@ def test_model(model):
 			y = torch.Tensor([int(y)])
 
 			predictions = model(x.float())
-			loss = criterion(predictions.unsqueeze(0).type(torch.float), y.type(torch.long)-1)
+			loss = criterion(predictions.unsqueeze(0).type(torch.float), y.type(torch.long))# -1 for normal ranking(already like that in precentiles) cause ranks should be [0,num_classes]
 			TestLoss.append(loss.item())
 	return np.mean(TestLoss)
 

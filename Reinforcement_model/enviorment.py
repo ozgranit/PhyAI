@@ -4,8 +4,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 import torch
-
-# this file is currently just for testing
+import bio_methods
 
 
 def env_reset():

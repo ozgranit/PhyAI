@@ -1,10 +1,14 @@
 import os
 import re
 import shutil
+import networkx
+import pandas as pd
+import pylab
+
+from Bio import Phylo
+from ete3 import Tree, PhyloTree
 from subprocess import Popen, PIPE, STDOUT
 
-import pandas as pd
-from ete3 import Tree, PhyloTree
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
 # conda install -c bioconda raxml-ng
@@ -193,6 +197,17 @@ def add_internal_names(tree_file, tree_file_cp_no_internal, t_orig):
 	t_orig.write(format=3, outfile=tree_file)   # runover the orig file with no internal nodes names
 
 
+def graph_from_tree():
+	# todo: edit method so it does what it should...
+	TREE_PATH = "/groups/itay_mayrose/danaazouri/PhyAI/DBset2/data_test/tree.txt"
+
+	tree = Phylo.read(TREE_PATH, "newick")
+	net = Phylo.to_networkx(tree)
+	pos = networkx.spring_layout(net)
+	print(pos)
+
+	networkx.draw(net)
+	pylab.show()
 
 
 if __name__ == '__main__':

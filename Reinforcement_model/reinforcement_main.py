@@ -1,12 +1,12 @@
 from reinforcement_model import DQN
 from reinforcement_dqn_learn import dqn_learning
-from dqn_utils import LinearSchedule
+from dqn_utils import LinearSchedule, plot_loss
 
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
 STEPS_LIMITS = 7
-NUM_ACTIONS = 20*20
-INPUT_SIZE = 20*20
+NUM_ACTIONS = 2*2
+INPUT_SIZE = 2*2
 
 
 def main(time_steps):
@@ -23,33 +23,12 @@ def main(time_steps):
 		batch_size=BATCH_SIZE,
 		target_update_freq=10000,
 	)
-	naive_loss = test_naive_model()
-	# we don't always bother filling TestLoss
-	try:
-		print("LNN Best Loss: %f" % min(TestLoss[1]))
-		print("Naive Model Loss: %f" % naive_loss)
-		if naive_loss < min(TestLoss[1]):
-			print("Naive Model did better.")
-		else:
-			print("LNN did better.")
 
-		idx = TestLoss[1].index(min(TestLoss[1]))
-		print("LNN Best Loss after %d Steps" % TestLoss[0][idx])
-	except ValueError:
-		print("No TestLoss, Moving on")
-	# plot_loss(TrainLoss, TestLoss)
-
-
-def test_LinearSchedule():
-	exploration = LinearSchedule(100000, 0.1)
-	for i in range(0, 130000, 10000):
-		v = exploration.value(i)
-		print(i, v)
+	plot_loss(TrainReward)
 
 
 if __name__ == '__main__':
 
-	time_steps = 200001
+	time_steps = 10001
 	# Run training
-	# main(time_steps)
-	test_LinearSchedule()
+	main(time_steps)

@@ -12,8 +12,9 @@ def env_reset():
 	# make tree into matrix
 	# save tree for play_action method
 	# return matrix as vector numpy
-	state = 0
-	return torch.tensor(state)
+	state = np.array([0, 1,
+	                  1, 0])
+	return torch.tensor(state).float()
 
 
 def play_action(state, action):
@@ -25,6 +26,6 @@ def play_action(state, action):
 	# make new tree into matrix
 	# reward = new ll - old ll
 	# return matrix and reward
-	next_state = 0
-	reward = 1
-	return torch.tensor(next_state), reward
+	next_state = env_reset()
+	reward = next_state[action-1].item()
+	return next_state, reward

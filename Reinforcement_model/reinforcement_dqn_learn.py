@@ -46,10 +46,10 @@ def dqn_learning(
 		eps_threshold = exploration.value(step)
 		if sample > eps_threshold:
 			with torch.no_grad():
-				max_action = model(state).argmax(dim=1)
+				max_action = model(state).argmax()
 				return max_action.numpy()
 		else:
-			return random.randint(1, num_actions)
+			return random.randint(0, num_actions-1)
 
 	###############
 	# BUILD MODEL #
@@ -120,7 +120,7 @@ def dqn_learning(
 		steps_taken += 1
 		# played max number of steps allowed or at local maxima - start new game
 		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss #todo: this line is wrong. find another way to find maximum
-		if steps_taken >= steps_limit or next_state_value < 0:
+		if steps_taken >= steps_limit :#or next_state_value < 0:
 			# start over
 			state = env_reset()
 			steps_taken = 0

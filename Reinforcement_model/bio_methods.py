@@ -1,13 +1,22 @@
 import os
 import re
 import shutil
+import sys
+
 import networkx
+import numpy
 import pandas as pd
 import pylab
 
 from Bio import Phylo
 from ete3 import Tree, PhyloTree
 from subprocess import Popen, PIPE, STDOUT
+
+from pathlib import Path
+
+parent_path = Path().resolve().parent
+
+data_folder = parent_path / 'data'
 
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
@@ -197,20 +206,20 @@ def add_internal_names(tree_file, tree_file_cp_no_internal, t_orig):
 	t_orig.write(format=3, outfile=tree_file)   # runover the orig file with no internal nodes names
 
 
-def graph_from_tree():
-	# todo: edit method so it does what it should...
-	TREE_PATH = "/groups/itay_mayrose/danaazouri/PhyAI/DBset2/data_test/tree.txt"
-
+def graph_from_tree(TREE_PATH = data_folder / "data/training_datasets/82/masked_species_real_msa.phy_phyml_tree_bionj.txt"):
 	tree = Phylo.read(TREE_PATH, "newick")
 	net = Phylo.to_networkx(tree)
 	pos = networkx.spring_layout(net)
-	print(pos)
-
-	networkx.draw(net)
-	pylab.show()
-
+	#print(pos)
+	#networkx.draw(net)
+	matrix = networkx.adjacency_matrix(net)
+	return matrix.toarray()
+	#pylab.show()
 
 if __name__ == '__main__':
+	graph_from_tree()
+
+if __name__ == '__main2__':
 	# update to full path
 	df = pd.read_csv("sampled_datasets.csv")
 	# test on 1 dataset only
@@ -219,7 +228,7 @@ if __name__ == '__main__':
 	t_orig = Tree(newick=tree_path, format=1)
 	t_orig.get_tree_root().name = "ROOT_LIKE"
 
-	tree_file_cp_no_internal =  tree_path + "_no_internat.txt"
+	tree_file_cp_no_internal = tree_path + "_no_internat.txt"
 	add_internal_names(tree_path, tree_file_cp_no_internal, t_orig)
 
 	'''

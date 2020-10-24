@@ -16,7 +16,7 @@ from pathlib import Path
 
 parent_path = Path().resolve().parent
 
-data_folder = parent_path / 'data'
+parent_folder = parent_path
 
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
@@ -206,15 +206,35 @@ def add_internal_names(tree_file, tree_file_cp_no_internal, t_orig):
 	t_orig.write(format=3, outfile=tree_file)   # runover the orig file with no internal nodes names
 
 
-def graph_from_tree(TREE_PATH = data_folder / "data/training_datasets/82/masked_species_real_msa.phy_phyml_tree_bionj.txt"):
-	tree = Phylo.read(TREE_PATH, "newick")
+# convert tree to weighted_adjacency_matrix
+def tree_to_matrix(tree):
 	net = Phylo.to_networkx(tree)
 	pos = networkx.spring_layout(net)
-	#print(pos)
-	#networkx.draw(net)
+	# print(pos)
+	# networkx.draw(net)
 	matrix = networkx.adjacency_matrix(net)
 	return matrix.toarray()
-	#pylab.show()
+	# pylab.show()
+
+
+# returns the tree from the text file in the msa_num's folder
+def get_tree_from_msa(msa_path="/data/training_datasets/82/"):
+	tree_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_tree_bionj.txt")
+	tree = Phylo.read(tree_path, "newick")
+	return tree
+
+
+# calculating likelihood of tree, msa_num should be the folder number of its corresponding msa
+def get_likelihood_simple(tree, msa_path="/data/training_datasets/82/"):
+
+	# taking the params required for likelihood calculation from the stats file in the msa_num's folder
+	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
+	params_dict = parse_phyml_stats_output(stats_path)
+	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
+
+	msa_path = parent_folder / (msa_path + "masked_species_real_msa.phy")
+	return return_likelihood(tree, msa_path, rates, pinv, alpha, freq)
+
 
 if __name__ == '__main__':
 	# update to full path

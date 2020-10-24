@@ -237,10 +237,11 @@ def get_likelihood_simple(tree, msa_path="/data/training_datasets/82/", params=N
 
 def calc_likelihood_params(msa_path="/data/training_datasets/82/"):
 	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
+	print(parent_folder)
+	print(stats_path)
+	exit(7)
 	params_dict = parse_phyml_stats_output(stats_path)
-	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [
-		params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],
-		params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
+	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
 
 	return freq, rates, pinv, alpha
 

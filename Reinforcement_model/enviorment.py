@@ -47,7 +47,8 @@ def set_random_msa_path():
 		csv_reader = csv.reader(csv_file, delimiter=',')
 		for i, row in enumerate(csv_reader):
 			if i == rand_row:
-				current_msa_path = row[3]
+				path = row[3]
+				current_msa_path = path[1:]
 				break
 
 

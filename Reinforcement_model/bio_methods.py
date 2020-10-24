@@ -218,14 +218,14 @@ def tree_to_matrix(tree):
 
 
 # returns the tree from the text file in the msa_num's folder
-def get_tree_from_msa(msa_path="/data/training_datasets/82/"):
+def get_tree_from_msa(msa_path="data/training_datasets/82/"):
 	tree_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_tree_bionj.txt")
 	tree = Phylo.read(tree_path, "newick")
 	return tree
 
 
 # calculating likelihood of tree, msa_num should be the folder number of its corresponding msa
-def get_likelihood_simple(tree, msa_path="/data/training_datasets/82/", params=None):
+def get_likelihood_simple(tree, msa_path="data/training_datasets/82/", params=None):
 	if params is None:
 		# taking the params required for likelihood calculation from the stats file in the msa_num's folder
 		freq, rates, pinv, alpha = calc_likelihood_params(msa_path)
@@ -233,13 +233,10 @@ def get_likelihood_simple(tree, msa_path="/data/training_datasets/82/", params=N
 		freq, rates, pinv, alpha = params
 
 	msa_path = parent_folder / (msa_path + "masked_species_real_msa.phy")
-	return return_likelihood(tree, msa_path, rates, pinv, alpha, freq)
+	return return_likelihood(tree, str(msa_path), rates, pinv, alpha, freq)
 
-def calc_likelihood_params(msa_path="/data/training_datasets/82/"):
+def calc_likelihood_params(msa_path="data/training_datasets/82/"):
 	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
-	print(parent_folder)
-	print(stats_path)
-	exit(7)
 	params_dict = parse_phyml_stats_output(stats_path)
 	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
 

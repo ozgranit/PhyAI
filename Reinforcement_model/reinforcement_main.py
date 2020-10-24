@@ -29,6 +29,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 10001
+	time_steps = 100001
 	# Run training
 	main(time_steps)

@@ -23,6 +23,7 @@ def sp_from_int(n):
 		return 'Sp00'+str(n)
 	return 'Sp0'+str(n)
 
+
 def num_to_action(n):
 	assert 0 <= n < 400
 	# 0 always defined as no-op, gives the model a chance to stay in place
@@ -40,12 +41,15 @@ def num_to_action(n):
 
 def set_random_msa_path():
 	global current_msa_path
-	rand_row = random.randit(1, 2992)
-	csv_reader = csv.reader(parent_path / "data/sampled_datasets.csv", delimiter=',')
-	for i, row in enumerate(csv_reader):
-		if i == rand_row:
-			current_msa_path = row[3]
-		break
+	rand_row = random.randint(1, 2992)
+	path = parent_folder / "data/sampled_datasets.csv"
+	with open(path, "r") as csv_file:
+		csv_reader = csv.reader(csv_file, delimiter=',')
+		for i, row in enumerate(csv_reader):
+			if i == rand_row:
+				current_msa_path = row[3]
+				break
+
 
 def env_reset():
 	# take new tree from trainning datasets

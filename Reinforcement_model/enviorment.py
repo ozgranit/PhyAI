@@ -15,6 +15,7 @@ parent_folder = parent_path / "reinforcement_data"
 global current_tree
 global current_msa_path
 global current_likelihood
+global likelihood_params
 
 
 def num_to_action(n):
@@ -45,13 +46,16 @@ def env_reset():
 	# return matrix as vector numpy
 	global current_tree
 	global current_msa_path
+	global likelihood_params
+	global current_likelihood
 
 	# setting a random folder from the different msa folders
 	set_random_msa_path()
-
+	likelihood_params = bio_methods.calc_likelihood_params(current_msa_path)
 	tree = bio_methods.get_tree_from_msa(msa_path=current_msa_path)
-	matrix = bio_methods.tree_to_matrix(tree=tree)
+	current_likelihood = bio_methods.get_likelihood_simple(tree, current_msa_path, likelihood_params)
 	current_tree = tree
+	matrix = bio_methods.tree_to_matrix(tree=tree)
 	return torch.tensor(matrix)
 
 
@@ -63,6 +67,9 @@ def play_action(state, action):
 	# convert action to two nodes("sp000-sp019 or N1-N20")
 	cut_name, paste_name = num_to_action(action)
 
+	if cut_name is None and paste_name is None:
+		return state, 0
+
 	# use two nodes and old tree to get new tree
 	new_tree = bio_methods.SPR_by_edge_names(current_tree, cut_name, paste_name)
 
@@ -70,7 +77,7 @@ def play_action(state, action):
 	next_state = bio_methods.tree_to_matrix(new_tree)
 
 	# calculating reward
-	new_likelihood = bio_methods.get_likelihood_simple(tree=new_tree, msa_path=current_msa_path)
+	new_likelihood = bio_methods.get_likelihood_simple(tree=new_tree, msa_path=current_msa_path, params=likelihood_params)
 	reward = new_likelihood - current_likelihood
 
 	current_likelihood = new_likelihood

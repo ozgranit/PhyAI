@@ -5,8 +5,6 @@ import numpy as np
 import torch
 import bio_methods
 
-<<<<<<< HEAD
-from reinforcement_main import NUM_ACTIONS
 from pathlib import Path
 
 parent_path = Path().resolve().parent

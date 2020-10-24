@@ -27,7 +27,8 @@ parent_path = Path().resolve().parent
 
 data_folder = parent_path / 'data'
 
-def split_test_train(p=0.2, file_path=dirpath_folder / 'big_file_ranked_precentile.csv'):
+
+def split_test_train(p=0.2, file_path=data_folder / 'big_file_ranked_precentile.csv'):
 	# p = precent of data to use as Test
 	# saves TWO csv files 'Training_set' and 'Test_set'
 	random.seed(datetime.now())

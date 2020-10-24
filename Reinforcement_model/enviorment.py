@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import bio_methods
 
+<<<<<<< HEAD
 from reinforcement_main import NUM_ACTIONS
 from pathlib import Path
 
@@ -18,16 +19,25 @@ global current_likelihood
 global likelihood_params
 
 
+def sp_from_int(n):
+	assert 0 <= n <= 19
+	if n < 10:
+		return 'Sp00'+str(n)
+	return 'Sp0'+str(n)
+
 def num_to_action(n):
-	assert 0 <= n < NUM_ACTIONS
+	assert 0 <= n < 400
 	# 0 always defined as no-op, gives the model a chance to stay in place
 	if n == 0:
-		return -1
+		return None, None
 	# possible pairs: ('Sp000', 'Sp001')...('Sp019', 'Sp018')
 	# allow duplicates ('Sp000', 'Sp001') and ('Sp001', 'Sp000')
 	# 19 options for each sp times 20 taxa = 380 pairs
-	first = n // 19   # // means get int from division
-	second = n % 19
+	first = n // 20   # // means get int from division
+	second = n % 20
+	if first == second:
+		return None, None   # no pairs of doubles allowed
+	return sp_from_int(first), sp_from_int(second)
 
 
 def set_random_msa_path():

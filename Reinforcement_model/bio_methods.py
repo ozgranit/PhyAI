@@ -1,13 +1,22 @@
 import os
 import re
 import shutil
+import sys
+
 import networkx
+import numpy
 import pandas as pd
 import pylab
 
 from Bio import Phylo
 from ete3 import Tree, PhyloTree
 from subprocess import Popen, PIPE, STDOUT
+
+from pathlib import Path
+
+parent_path = Path().resolve().parent
+
+parent_folder = parent_path / "reinforcement_data"
 
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
@@ -197,18 +206,43 @@ def add_internal_names(tree_file, tree_file_cp_no_internal, t_orig):
 	t_orig.write(format=3, outfile=tree_file)   # runover the orig file with no internal nodes names
 
 
-def graph_from_tree():
-	# todo: edit method so it does what it should...
-	TREE_PATH = "/groups/itay_mayrose/danaazouri/PhyAI/DBset2/data_test/tree.txt"
-
-	tree = Phylo.read(TREE_PATH, "newick")
+# convert tree to weighted_adjacency_matrix
+def tree_to_matrix(tree):
 	net = Phylo.to_networkx(tree)
-	pos = networkx.spring_layout(net)
-	print(pos)
+	# pos = networkx.spring_layout(net)
+	# print(pos)
+	# networkx.draw(net)
+	matrix = networkx.adjacency_matrix(net)
+	return matrix.toarray()
+	# pylab.show()
 
-	networkx.draw(net)
-	pylab.show()
 
+# returns the tree from the text file in the msa_num's folder
+def get_tree_from_msa(msa_path="/data/training_datasets/82/"):
+	tree_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_tree_bionj.txt")
+	tree = Phylo.read(tree_path, "newick")
+	return tree
+
+
+# calculating likelihood of tree, msa_num should be the folder number of its corresponding msa
+def get_likelihood_simple(tree, msa_path="/data/training_datasets/82/", params=None):
+	if params is None:
+		# taking the params required for likelihood calculation from the stats file in the msa_num's folder
+		freq, rates, pinv, alpha = calc_likelihood_params(msa_path)
+	else:
+		freq, rates, pinv, alpha = params
+
+	msa_path = parent_folder / (msa_path + "masked_species_real_msa.phy")
+	return return_likelihood(tree, msa_path, rates, pinv, alpha, freq)
+
+def calc_likelihood_params(msa_path="/data/training_datasets/82/"):
+	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
+	params_dict = parse_phyml_stats_output(stats_path)
+	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [
+		params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],
+		params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
+
+	return freq, rates, pinv, alpha
 
 if __name__ == '__main__':
 	# update to full path

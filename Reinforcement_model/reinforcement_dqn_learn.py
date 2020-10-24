@@ -46,10 +46,10 @@ def dqn_learning(
 		eps_threshold = exploration.value(step)
 		if sample > eps_threshold:
 			with torch.no_grad():
-				max_action = model(state).argmax(dim=1)
+				max_action = model(state).argmax()
 				return max_action.numpy()
 		else:
-			return random.randint(1, num_actions)
+			return random.randint(0, num_actions-1)
 
 	###############
 	# BUILD MODEL #
@@ -90,6 +90,7 @@ def dqn_learning(
 		1. no replay buffer yet - the training samples aren't iid
 		2. we don't use the finite horizon properly - the state space does not represent how many actions were taken
 		3. loss and optimier might need to change- common are Huberloss and RMSporp optimizer
+		4. a discounting factor gamma might be required although we limit the num of steps
 	"""
 	for t in range(start, time_steps):
 		###################
@@ -112,13 +113,13 @@ def dqn_learning(
 		# Backward + Optimize
 		loss.backward()
 		optimizer.step()
-		optimizer.zero_grad() 
+		optimizer.zero_grad()
 
 		# advance to next state
 		state = next_state
 		steps_taken += 1
 		# played max number of steps allowed or at local maxima - start new game
-		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss #todo: this line is wrong. find another way to find maximum
+		# next_state_value < 0 - means the q_func estimates that taking more actions will yield loss
 		if steps_taken >= steps_limit or next_state_value < 0:
 			# start over
 			state = env_reset()

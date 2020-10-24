@@ -87,10 +87,11 @@ def dqn_learning(
 	steps_taken = 0
 
 	"""problems:
-		1. no replay buffer yet - the training samples aren't iid
-		2. we don't use the finite horizon properly - the state space does not represent how many actions were taken
-		3. loss and optimier might need to change- common are Huberloss and RMSporp optimizer
-		4. a discounting factor gamma might be required although we limit the num of steps
+		1. no replay buffer yet - the training samples aren't iid.
+		2. we don't use the finite horizon properly - the state space does not represent how many actions were taken.
+		3. loss and optimier might need to change- common are Huberloss and RMSporp optimizer.
+		4. a discounting factor gamma might be required although we limit the num of steps.
+		5. 380 viable actions are too much for the model to converge on.
 	"""
 	for t in range(start, time_steps):
 		###################

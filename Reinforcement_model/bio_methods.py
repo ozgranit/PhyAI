@@ -217,9 +217,6 @@ def graph_from_tree(TREE_PATH = data_folder / "data/training_datasets/82/masked_
 	#pylab.show()
 
 if __name__ == '__main__':
-	graph_from_tree()
-
-if __name__ == '__main2__':
 	# update to full path
 	df = pd.read_csv("sampled_datasets.csv")
 	# test on 1 dataset only
@@ -228,7 +225,7 @@ if __name__ == '__main2__':
 	t_orig = Tree(newick=tree_path, format=1)
 	t_orig.get_tree_root().name = "ROOT_LIKE"
 
-	tree_file_cp_no_internal = tree_path + "_no_internat.txt"
+	tree_file_cp_no_internal =  tree_path + "_no_internat.txt"
 	add_internal_names(tree_path, tree_file_cp_no_internal, t_orig)
 
 	'''

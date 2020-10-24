@@ -16,7 +16,7 @@ from pathlib import Path
 
 parent_path = Path().resolve().parent
 
-parent_folder = parent_path
+parent_folder = parent_path / "reinforcement_data"
 
 
 RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine

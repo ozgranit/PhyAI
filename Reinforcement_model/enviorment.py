@@ -10,7 +10,7 @@ from pathlib import Path
 
 parent_path = Path().resolve().parent
 
-parent_folder = parent_path
+parent_folder = parent_path / "reinforcement_data"
 
 global current_tree
 global current_msa_path

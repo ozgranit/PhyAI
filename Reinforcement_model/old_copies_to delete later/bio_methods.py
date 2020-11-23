@@ -1,58 +1,60 @@
-import re, os, shutil
-import pandas as pd
+import os
+import re
+import shutil
+import sys
+
 import networkx
+import numpy
+import pandas as pd
+import pylab
+
 from Bio import Phylo
-from ete3 import Tree
+from ete3 import Tree, PhyloTree
 from subprocess import Popen, PIPE, STDOUT
+
 from pathlib import Path
 
 parent_path = Path().resolve().parent
 parent_folder = parent_path / "reinforcement_data"
 
-RAXML_NG_SCRIPT = "raxml-ng"  # after you install raxml-ng on your machine
+
+RAXML_NG_SCRIPT = "raxml-ng"    # after you install raxml-ng on your machine
 # conda install -c bioconda raxml-ng
 MSA_PHYLIP_FILENAME = "masked_species_real_msa.phy"
 
 
-def return_likelihood(tree, msa_file, rates, pinv, alpha, freq):
-	"""
-	:param tree: ETEtree OR a newick string
-	:param msa_file:
-	:param rates: as extracted from parse_raxmlNG_content() returned dict
-	:param pinv: as extracted from parse_raxmlNG_content() returned dict
-	:param alpha: as extracted from parse_raxmlNG_content() returned dict
-	:param freq: as extracted from parse_raxmlNG_content() returned dict
-	:return: float. the score is the minus log-likelihood value of the tree
-	"""
+def return_likelihood(tree_str, msa_file, rates, pinv, alpha, freq):
 	model_line_params = 'GTR{rates}+I{pinv}+G{alpha}+F{freq}'.format(rates="{{{0}}}".format("/".join(rates)),
-	                                                                 pinv="{{{0}}}".format(pinv),
-	                                                                 alpha="{{{0}}}".format(alpha),
-	                                                                 freq="{{{0}}}".format("/".join(freq)))
+									 pinv="{{{0}}}".format(pinv), alpha="{{{0}}}".format(alpha),
+									 freq="{{{0}}}".format("/".join(freq)))
 
 	# create tree file in memory and not in the storage:
-	tree_rampath = "/dev/shm/" + msa_file.split("/")[-1] + "tree"  # the var is the str: tmp{dir_suffix}
+	# tree_rampath = "/dev/shm/" + msa_file.split("/")[-1] + "tree"  # the var is the str: tmp{dir_suffix}
+	tree_rampath = parent_folder / "tree"
+	return -5000, 0
 	try:
 		with open(tree_rampath, "w") as fpw:
-			fpw.write(tree)
+			fpw.write(tree_str)
 
-		p = Popen(
-			[RAXML_NG_SCRIPT, '--evaluate', '--msa', msa_file, '--threads', '1', '--opt-branches', 'on', '--opt-model',
-			 'off', '--model', model_line_params, '--nofiles', '--tree', tree_rampath],
-			stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+		#p = Popen([RAXML_NG_SCRIPT, '--evaluate', '--msa', msa_file,'--threads', '1', '--opt-branches', 'on', '--opt-model', 'off', '--model', model_line_params, '--nofiles', '--tree', tree_rampath],
+		#		  stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 		raxml_stdout = p.communicate()[0]
 		raxml_output = raxml_stdout.decode()
 
 		res_dict = parse_raxmlNG_content(raxml_output)
 		ll = res_dict['ll']
+		rtime = res_dict['time']
 
 	except Exception as e:
 		print(msa_file.split("/")[-1])
+		print(msa_file)
+		print(tree_rampath)
 		print(e)
-		exit()
+		exit(7)
 	finally:
 		os.remove(tree_rampath)
 
-	return ll
+	return ll, rtime
 
 
 def parse_raxmlNG_content(content):
@@ -60,14 +62,13 @@ def parse_raxmlNG_content(content):
 	:return: dictionary with the attributes - string typed. if parameter was not estimated, empty string
 	"""
 	res_dict = dict.fromkeys(["ll", "pInv", "gamma",
-	                          "fA", "fC", "fG", "fT",
-	                          "subAC", "subAG", "subAT", "subCG", "subCT", "subGT",
-	                          "time"], "")
+							  "fA", "fC", "fG", "fT",
+							  "subAC", "subAG", "subAT", "subCG", "subCT", "subGT",
+							  "time"], "")
 
 	# likelihood
 	ll_re = re.search("Final LogLikelihood:\s+(.*)", content)
-	if not ll_re and (
-			re.search("BL opt converged to a worse likelihood score by", content) or re.search("failed", content)):
+	if not ll_re and (re.search("BL opt converged to a worse likelihood score by", content) or re.search("failed", content)):
 		res_dict["ll"] = re.search("initial LogLikelihood:\s+(.*)", content).group(1).strip()
 	else:
 		res_dict["ll"] = ll_re.group(1).strip()
@@ -82,15 +83,13 @@ def parse_raxmlNG_content(content):
 
 		# Nucleotides frequencies
 		nucs_freq = re.search("Base frequencies.*?:\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)", content)
-		for i, nuc in enumerate("ACGT"):
-			res_dict["f" + nuc] = nucs_freq.group(i + 1).strip()
+		for i,nuc in enumerate("ACGT"):
+			res_dict["f" + nuc] = nucs_freq.group(i+1).strip()
 
 		# substitution frequencies
-		subs_freq = re.search(
-			"Substitution rates.*:\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)",
-			content)
-		for i, nuc_pair in enumerate(["AC", "AG", "AT", "CG", "CT", "GT"]):  # todo: make sure order
-			res_dict["sub" + nuc_pair] = subs_freq.group(i + 1).strip()
+		subs_freq = re.search("Substitution rates.*:\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)", content)
+		for i,nuc_pair in enumerate(["AC", "AG", "AT", "CG", "CT", "GT"]):  # todo: make sure order
+			res_dict["sub" + nuc_pair] = subs_freq.group(i+1).strip()
 
 		# Elapsed time of raxml-ng optimization
 		rtime = re.search("Elapsed time:\s+(\d+\.?\d*)\s+seconds", content)
@@ -106,10 +105,11 @@ def parse_phyml_stats_output(stats_filepath):
     :return: dictionary with the attributes - string typed. if parameter was not estimated, empty string
     """
 	res_dict = dict.fromkeys(["ntaxa", "nchars", "ll",
-	                          "fA", "fC", "fG", "fT",
-	                          "subAC", "subAG", "subAT", "subCG", "subCT", "subGT",
-	                          "pInv", "gamma",
-	                          "path"], "")
+							  "fA", "fC", "fG", "fT",
+							  "subAC", "subAG", "subAT", "subCG", "subCT", "subGT",
+							  "pInv", "gamma",
+							  "path"], "")
+
 
 	res_dict["path"] = stats_filepath
 	try:
@@ -146,32 +146,30 @@ def parse_phyml_stats_output(stats_filepath):
 
 def prune_branch(t_orig, prune_name):
 	'''
-	returns (a copy of) both ETE subtrees after pruning
+	get (a copy of) both subtrees after pruning
 	'''
 	t_cp_p = t_orig.copy()  # the original tree is needed for each iteration
-	assert t_cp_p & prune_name  # todo Oz: add indicative error
+	assert t_cp_p & prune_name    # todo Oz: add indicative error
 	prune_node_cp = t_cp_p & prune_name  # locate the node in the copied subtree
 	assert prune_node_cp.up
 
 	nname = prune_node_cp.up.name
 	prune_loc = prune_node_cp
 	prune_loc.detach()  # pruning: prune_node_cp is now the subtree we detached. t_cp_p is the one that was left behind
-	t_cp_p.search_nodes(name=nname)[0].delete(
-		preserve_branch_length=True)  # delete the specific node (without its childs) since after pruning this branch should not be divided
+	t_cp_p.search_nodes(name=nname)[0].delete(preserve_branch_length=True)  # delete the specific node (without its childs) since after pruning this branch should not be divided
 
 	return nname, prune_node_cp, t_cp_p
 
 
 def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 	'''
-	recieves: 2 ETE subtrees and 2 node names
-	returns: an ETEtree with the 2 concatenated ETE subtrees
+	get a tree with the 2 concatenated subtrees
 	'''
 
-	t_temp = Tree()  # for concatenation of both subtrees ahead, to avoid polytomy
+	t_temp = PhyloTree()  # for concatenation of both subtrees ahead, to avoid polytomy
 	t_temp.add_child(prune_node_cp)
 	t_curr = t_cp_p.copy()
-	assert t_curr & rgft_name  # todo Oz: add indicative error
+	assert t_curr & rgft_name   # todo Oz: add indicative error
 	rgft_node_cp = t_curr & rgft_name  # locate the node in the copied subtree
 	new_branch_length = rgft_node_cp.dist / 2
 
@@ -184,27 +182,17 @@ def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 	return t_curr
 
 
-def SPR_by_edge_names(ETEtree, cut_name, paste_name):
-	nname, subtree1, subtree2 = prune_branch(ETEtree,
-	                                         cut_name)  # subtree1 is the pruned subtree. subtree2 is the remaining subtree
-	rearr_tree_str = regraft_branch(subtree2, subtree1, paste_name, nname).write(
-		format=1)  # .write() is how you convert an ETEtree to newick string. now you can convert it back (if needed) using Tree(), or convert it to BIOtree
+def SPR_by_edge_names(tree_obj, cut_name, paste_name):
+	nname, subtree1, subtree2 = prune_branch(tree_obj, cut_name)  # subtree1 is the pruned subtree. subtree2 is the remaining subtree
+	rearr_tree_str = regraft_branch(subtree2, subtree1, paste_name, nname).write(format=1)
 
 	return rearr_tree_str
 
 
-def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
-	# todo oz: I know you defined 'newfile_suffix' diferently (just None to runover?)
-	N_lst = ["N{}".format(i) for i in range(1,
-	                                        19)]  # for tree with ntaxa=20 there are 2n-3 nodes --> n-3=17 internal nodes. plus one ROOT_LIKE node ==> always 18 internal nodes.
-	i = 0
-	for node in t_orig.traverse():
-		if not node.is_leaf():
-			node.name = N_lst[i]
-			i += 1
-	t_orig.write(format=3, outfile=tree_file + newfile_suffix)
-
-	return t_orig, tree_file + newfile_suffix
+def add_internal_names(tree_file, t_orig):
+	for i, leaf in enumerate(t_orig.traverse()):
+			leaf.name = "N{}".format(i)
+	t_orig.write(format=3, outfile=tree_file)   # runover the orig file with no internal nodes names
 
 
 # convert tree to weighted_adjacency_matrix
@@ -250,37 +238,40 @@ def get_likelihood_simple(tree_str, msa_path="data/training_datasets/82/", param
 def calc_likelihood_params(msa_path="data/training_datasets/82/"):
 	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
 	params_dict = parse_phyml_stats_output(stats_path)
-	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [
-		params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],
-		params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
+	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
 
 	return freq, rates, pinv, alpha
 
 
 if __name__ == '__main__':
+	# update to full path
+	df = pd.read_csv(parent_folder / "data" / "sampled_datasets.csv")
 	# test on 1 dataset only
-	DATAPATH = "/groups/itay_mayrose/danaazouri/PhyAI/ML_workshop/reinforcement_data/"
-	df = pd.read_csv(DATAPATH + "data/sampled_datasets.csv")
-	curr_path = DATAPATH + df.loc[0, "path"]
+	curr_path = df.loc[0, "path"]
 	tree_path = curr_path + MSA_PHYLIP_FILENAME + "_phyml_tree_bionj.txt"
+	t_orig = Tree(newick=tree_path, format=1)
+	exit(-2)
+	t_orig.get_tree_root().name = "ROOT_LIKE"
 
-	t_orig = Tree(newick=tree_path, format=1)  # ETEtree
-	t_orig.get_tree_root().name = "ROOT_LIKE"  # ETEtree
-	print(t_orig.get_ascii(show_internal=True))
+	tree_file_cp_no_internal =  tree_path + "_no_internat.txt"
+	add_internal_names(tree_path, tree_file_cp_no_internal, t_orig)
 
-	######## only for pre-processing ########
-	ETEtree_with_internal_names, new_tree_path = add_internal_names(tree_path, t_orig)
-	#########################################
+	'''
+	lst_of_possible_cut_and_paste_names_pairs = []    # you could generate as following:
+	for i, prune_node in enumerate(t_orig.iter_descendants("levelorder")):
+		prune_name = prune_node.name
+		nname, subtree1, subtree2 = prune_branch(t_orig, prune_name)
+		for j, rgft_node in enumerate(subtree2.iter_descendants("levelorder")):
+			rgft_name = rgft_node.name
+			#lst_of_possible_cut_and_paste_names_pairs.append(...
+	neighbor_tree_str = SPR_by_edge_names(t_orig, lst_of_possible_cut_and_paste_names_pairs[0][0], lst_of_possible_cut_and_paste_names_pairs[0][1])
+	'''
 
-	# a possible pair could NOT be something ELSE than all pair-combinations between [Sp000, ... , Sp0019] and [N1, ... , N18].  You can't know in advance which of THESE do exist (topology-dependant)
-	neighbor_tree_str = SPR_by_edge_names(ETEtree_with_internal_names, 'Sp000', 'Sp002')
+	neighbor_tree_str = SPR_by_edge_names(t_orig, 'Sp000', 'Sp001')
 
 	# extract model params from the starting tree, to fix when calculating the likelihood of all neighbors
-	starting_tree_path = curr_path + MSA_PHYLIP_FILENAME + "_phyml_stats_bionj.txt"
-	params_dict = parse_phyml_stats_output(starting_tree_path)
-	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [
-		params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],
-		params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
+	params_dict = parse_phyml_stats_output(curr_path + MSA_PHYLIP_FILENAME + "_phyml_stats_bionj.txt")
+	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [params_dict["subAC"], params_dict["subAG"], params_dict["subAT"], params_dict["subCG"], params_dict["subCT"],params_dict["subGT"]], params_dict["pInv"], params_dict["gamma"]
 
 	# run raxml-ng for likelihood computation
-	ll_rearr = return_likelihood(neighbor_tree_str, curr_path + MSA_PHYLIP_FILENAME, rates, pinv, alpha, freq)
+	ll_rearr, rtime = return_likelihood(neighbor_tree_str, curr_path + MSA_PHYLIP_FILENAME, rates, pinv, alpha, freq)

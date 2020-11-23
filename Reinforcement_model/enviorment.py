@@ -1,17 +1,16 @@
 import csv
 import random
-
-import numpy as np
 import torch
 import bio_methods
 
 from pathlib import Path
 
 parent_path = Path().resolve().parent
-
 parent_folder = parent_path / "reinforcement_data"
 
-global current_tree
+global current_ete_tree
+global current_bio_tree
+global current_tree_str
 global current_msa_path
 global current_likelihood
 global likelihood_params
@@ -20,8 +19,8 @@ global likelihood_params
 def sp_from_int(n):
 	assert 0 <= n <= 19
 	if n < 10:
-		return 'Sp00'+str(n)
-	return 'Sp0'+str(n)
+		return 'Sp00'+str(n.item())
+	return 'Sp0'+str(n.item())
 
 
 def num_to_action(n):
@@ -57,7 +56,9 @@ def env_reset():
 	# make tree into matrix
 	# save tree for play_action method
 	# return matrix as vector numpy
-	global current_tree
+	global current_ete_tree
+	global current_tree_str
+	global current_bio_tree
 	global current_msa_path
 	global likelihood_params
 	global current_likelihood
@@ -65,16 +66,21 @@ def env_reset():
 	# setting a random folder from the different msa folders
 	set_random_msa_path()
 	likelihood_params = bio_methods.calc_likelihood_params(current_msa_path)
-	tree = bio_methods.get_tree_from_msa(msa_path=current_msa_path)
-	current_likelihood = bio_methods.get_likelihood_simple(tree, current_msa_path, likelihood_params)
-	current_tree = tree
-	matrix = bio_methods.tree_to_matrix(tree=tree)
+	ete_tree, bio_tree, tree_str = bio_methods.get_tree_from_msa(msa_path=current_msa_path)
+
+	current_likelihood = bio_methods.get_likelihood_simple(tree_str, current_msa_path, likelihood_params)
+	matrix = bio_methods.tree_to_matrix(bio_tree)
+
+	current_ete_tree = ete_tree
+	current_bio_tree = bio_tree
+	current_tree_str = tree_str
+
 	return torch.tensor(matrix)
 
 
 def play_action(state, action):
 	global current_likelihood
-	global current_tree
+	global current_ete_tree
 	global current_msa_path
 
 	# convert action to two nodes("sp000-sp019 or N1-N20")
@@ -84,24 +90,18 @@ def play_action(state, action):
 		return state, 0
 
 	# use two nodes and old tree to get new tree
-	new_tree = bio_methods.SPR_by_edge_names(current_tree, cut_name, paste_name)
+	print(current_ete_tree.get_ascii(show_internal=True))
+	print(cut_name, paste_name)
+	new_ete_tree = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
 
 	# make new tree into matrix
-	next_state = bio_methods.tree_to_matrix(new_tree)
+	next_state = bio_methods.tree_to_matrix(new_ete_tree)
 
 	# calculating reward
-	new_likelihood = bio_methods.get_likelihood_simple(tree=new_tree, msa_path=current_msa_path, params=likelihood_params)
+	new_likelihood = bio_methods.get_likelihood_simple(tree=new_ete_tree, msa_path=current_msa_path, params=likelihood_params)
 	reward = new_likelihood - current_likelihood
 
 	current_likelihood = new_likelihood
-	current_tree = new_tree
+	current_ete_tree = new_ete_tree
 
 	return next_state, reward
-
-
-if __name__ == '__main__':
-	env_reset()
-
-	# for every tree folder
-	# get_graph
-	#

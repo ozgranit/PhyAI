@@ -39,6 +39,7 @@ def return_likelihood(tree, msa_file, rates, pinv, alpha, freq):
 			[RAXML_NG_SCRIPT, '--evaluate', '--msa', msa_file, '--threads', '1', '--opt-branches', 'on', '--opt-model',
 			 'off', '--model', model_line_params, '--nofiles', '--tree', tree_rampath],
 			stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+
 		raxml_stdout = p.communicate()[0]
 		raxml_output = raxml_stdout.decode()
 
@@ -48,11 +49,12 @@ def return_likelihood(tree, msa_file, rates, pinv, alpha, freq):
 	except Exception as e:
 		print(msa_file.split("/")[-1])
 		print(e)
+		print("return_likelihood() in bio_methods.py")
 		exit()
 	finally:
 		os.remove(tree_rampath)
 
-	return ll
+	return float(ll)    # changed to return a num not a str
 
 
 def parse_raxmlNG_content(content):
@@ -195,16 +197,18 @@ def SPR_by_edge_names(ETEtree, cut_name, paste_name):
 
 def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
 	# todo oz: I know you defined 'newfile_suffix' diferently (just None to runover?)
-	N_lst = ["N{}".format(i) for i in range(1,
-	                                        19)]  # for tree with ntaxa=20 there are 2n-3 nodes --> n-3=17 internal nodes. plus one ROOT_LIKE node ==> always 18 internal nodes.
+	# for tree with ntaxa=20 there are 2n-3 nodes --> n-3=17 internal nodes. plus one ROOT_LIKE node ==> always 18 internal nodes.
+	N_lst = ["N{}".format(i) for i in range(1,19)]
 	i = 0
 	for node in t_orig.traverse():
 		if not node.is_leaf():
 			node.name = N_lst[i]
 			i += 1
-	t_orig.write(format=3, outfile=tree_file + newfile_suffix)
+	# assuming tree file is a pathlib path
+	new_tree_file = tree_file.parent / (tree_file.name + newfile_suffix)
+	t_orig.write(format=3, outfile=new_tree_file)
 
-	return t_orig, tree_file + newfile_suffix
+	return t_orig, new_tree_file
 
 
 # convert tree to weighted_adjacency_matrix
@@ -218,21 +222,33 @@ def tree_to_matrix(bio_tree):
 # returns the tree from the text file in the msa_num's folder
 def get_tree_from_msa(msa_path="data/training_datasets/82/"):
 	tree_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_tree_bionj.txt")
-	tree_copy = parent_folder / (msa_path + "for_now.txt")
 
 	with open(tree_path, "r") as f:
 		tree_str = f.read()
 	ete_tree = Tree(newick=tree_str, format=1)
-	shutil.copy(tree_path, tree_copy)
-	# add_internal_names runs over the file it is given
-	add_internal_names(tree_copy, ete_tree)
+
+	# add_internal_names does not run over the file it is given
+	ete_tree, tree_copy = add_internal_names(tree_path, ete_tree)
+
 	with open(tree_copy, "r") as f:
 		tree_str = f.read()
-	ete_tree = Tree(newick=tree_str, format=1)
 	ete_tree.get_tree_root().name = "ROOT_LIKE"
 	bio_tree = Phylo.read(tree_copy, "newick")
 	os.remove(tree_copy)
 	return ete_tree, bio_tree, tree_str
+
+
+# converts string to other formats
+def get_ete_and_bio_from_str(tree_str, msa_path):
+	tree_copy = parent_folder / (msa_path + "for_now.txt")
+
+	ete_tree = Tree(newick=tree_str, format=1)
+	with open(tree_copy, "w") as f:
+		f.write(tree_str)
+
+	bio_tree = Phylo.read(tree_copy, "newick")
+	os.remove(tree_copy)
+	return ete_tree, bio_tree
 
 
 # calculating likelihood of tree, msa_num should be the folder number of its corresponding msa

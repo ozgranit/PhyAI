@@ -8,6 +8,12 @@ from pathlib import Path
 parent_path = Path().resolve().parent
 parent_folder = parent_path / "reinforcement_data"
 
+"""we maintain 3 different tree formats for our env, string is the most general one, 
+we convert to ete or bio when needed,
+ete - for most bio- methods - pruning regrafting and such,
+bio - for converting tree to matrix
+"""
+
 global current_ete_tree
 global current_bio_tree
 global current_tree_str
@@ -16,7 +22,17 @@ global current_likelihood
 global likelihood_params
 
 
+def n_from_int(n):
+	# this method translates int to internal node N{}
+	if n < 1 or n > 18:
+		return None
+	if n < 10:
+		return 'N00'+str(n.item())
+	return 'N0'+str(n.item())
+
+
 def sp_from_int(n):
+	# this method translates int to leaf node Sp{}
 	assert 0 <= n <= 19
 	if n < 10:
 		return 'Sp00'+str(n.item())
@@ -81,7 +97,10 @@ def env_reset():
 def play_action(state, action):
 	global current_likelihood
 	global current_ete_tree
+	global current_bio_tree
+	global current_tree_str
 	global current_msa_path
+	global likelihood_params
 
 	# convert action to two nodes("sp000-sp019 or N1-N20")
 	cut_name, paste_name = num_to_action(action)
@@ -91,17 +110,18 @@ def play_action(state, action):
 
 	# use two nodes and old tree to get new tree
 	print(current_ete_tree.get_ascii(show_internal=True))
-	print(cut_name, paste_name)
-	new_ete_tree = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
+	print("cut_name="+cut_name+" paste_name="+paste_name)
+	current_tree_str = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
+	current_ete_tree, current_bio_tree = bio_methods.get_ete_and_bio_from_str(current_tree_str, current_msa_path)
 
 	# make new tree into matrix
-	next_state = bio_methods.tree_to_matrix(new_ete_tree)
+	next_state = bio_methods.tree_to_matrix(current_bio_tree)
 
 	# calculating reward
-	new_likelihood = bio_methods.get_likelihood_simple(tree=new_ete_tree, msa_path=current_msa_path, params=likelihood_params)
+	print(current_ete_tree.get_ascii(show_internal=True))
+	new_likelihood = bio_methods.get_likelihood_simple(tree_str=current_tree_str, msa_path=current_msa_path, params=likelihood_params)
 	reward = new_likelihood - current_likelihood
 
 	current_likelihood = new_likelihood
-	current_ete_tree = new_ete_tree
 
 	return next_state, reward

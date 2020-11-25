@@ -59,8 +59,8 @@ def dqn_learning(
 		Q = q_func(input_size=input_size, num_actions=num_actions).cuda()
 		Q_target = q_func(input_size=input_size, num_actions=num_actions).cuda()
 	else:
-		Q = q_func(input_size=input_size, num_actions=num_actions)
-		Q_target = q_func(input_size=input_size, num_actions=num_actions)
+		Q = q_func(input_size=input_size, num_actions=num_actions).double()
+		Q_target = q_func(input_size=input_size, num_actions=num_actions).double()
 
 	# initialize weights
 	Q.apply(weights_init_uniform_rule)

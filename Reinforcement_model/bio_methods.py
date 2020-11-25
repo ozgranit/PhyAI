@@ -1,11 +1,14 @@
-import re, os, shutil
+import re, os
+import numpy as np
 import pandas as pd
-import networkx
+import networkx as nx
 from Bio import Phylo
 from ete3 import Tree
 from subprocess import Popen, PIPE, STDOUT
 from pathlib import Path
+from reinforcement_model import INPUT_SIZE
 
+NUM_OF_NODES = np.sqrt(INPUT_SIZE)
 parent_path = Path().resolve().parent
 parent_folder = parent_path / "reinforcement_data"
 
@@ -214,9 +217,15 @@ def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
 # convert tree to weighted_adjacency_matrix
 def tree_to_matrix(bio_tree):
 	net = Phylo.to_networkx(bio_tree)
-	matrix = networkx.adjacency_matrix(net)
-
-	return matrix.toarray()
+	if net.number_of_nodes() != NUM_OF_NODES:
+		print("tree_to_matrix() in bio_methods")
+		print("net has "+str(net.number_of_nodes())+" nodes")
+		Phylo.draw_ascii(bio_tree)
+		exit()
+	# matrix = networkx.adjacency_matrix(net)
+	matrix = nx.to_numpy_matrix(net)
+	# makes a numpy array from 2-dim matrix
+	return np.asarray(matrix).reshape(-1)
 
 
 # returns the tree from the text file in the msa_num's folder

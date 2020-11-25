@@ -109,8 +109,8 @@ def play_action(state, action):
 		return state, 0
 
 	# use two nodes and old tree to get new tree
-	print(current_ete_tree.get_ascii(show_internal=True))
-	print("cut_name="+cut_name+" paste_name="+paste_name)
+	# print(current_ete_tree.get_ascii(show_internal=True))
+	# print("cut_name="+cut_name+" paste_name="+paste_name)
 	current_tree_str = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
 	current_ete_tree, current_bio_tree = bio_methods.get_ete_and_bio_from_str(current_tree_str, current_msa_path)
 
@@ -118,10 +118,9 @@ def play_action(state, action):
 	next_state = bio_methods.tree_to_matrix(current_bio_tree)
 
 	# calculating reward
-	print(current_ete_tree.get_ascii(show_internal=True))
 	new_likelihood = bio_methods.get_likelihood_simple(tree_str=current_tree_str, msa_path=current_msa_path, params=likelihood_params)
 	reward = new_likelihood - current_likelihood
 
 	current_likelihood = new_likelihood
 
-	return next_state, reward
+	return torch.tensor(next_state), reward

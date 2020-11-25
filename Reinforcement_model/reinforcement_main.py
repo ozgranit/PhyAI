@@ -1,12 +1,10 @@
-from reinforcement_model import DQN
+from reinforcement_model import DQN, NUM_ACTIONS, INPUT_SIZE
 from reinforcement_dqn_learn import dqn_learning
 from dqn_utils import LinearSchedule, plot_loss
 
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
 STEPS_LIMITS = 100
-NUM_ACTIONS = 20*20
-INPUT_SIZE = 20*20
 
 
 def main(time_steps):

@@ -1,6 +1,10 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+# model constants are defined here, because multiple files import them
+NUM_ACTIONS = 20*20
+INPUT_SIZE = 39*39   # 20 leafs + 19 internal nodes
+
 
 class DQN(nn.Module):
     # model#1

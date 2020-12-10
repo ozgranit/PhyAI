@@ -92,6 +92,12 @@ def dqn_learning(
 		3. loss and optimier might need to change- common are Huberloss and RMSporp optimizer.
 		4. a discounting factor gamma might be required although we limit the num of steps.
 		5. 380 viable actions are too much for the model to converge on.
+		6. a decent idea might be to use two graph NN in a RL-type way - one to choose the cut node, and another to choose the paste node,
+		maybe train them in order - first train the cut network (and reward it using the best possible paste value, wich well calculate exsutivly)
+		 then train the paste network.
+		 a different approch will be to train them as we do on Q and Q_target, fix one and train the other, than replace.
+		 maybe reading about DDQN will help
+		 
 	"""
 	for t in range(start, time_steps):
 		###################

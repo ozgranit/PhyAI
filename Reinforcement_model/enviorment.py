@@ -107,7 +107,6 @@ def play_action(state, action):
 
 	if cut_name is None and paste_name is None:
 		return state, 0
-
 	# use two nodes and old tree to get new tree
 	# print(current_ete_tree.get_ascii(show_internal=True))
 	# print("cut_name="+cut_name+" paste_name="+paste_name)

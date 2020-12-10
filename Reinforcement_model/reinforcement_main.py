@@ -4,11 +4,12 @@ from dqn_utils import LinearSchedule, plot_loss
 
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
-STEPS_LIMITS = 100
+STEPS_LIMIT = 100
+TARGET_UPDATE_FREQ = 10000
 
 
 def main(time_steps):
-	exploration_schedule = LinearSchedule(100000, 0.05)
+	exploration_schedule = LinearSchedule(2000000, 0.05)
 
 	TrainReward = dqn_learning(
 		q_func=DQN,
@@ -16,10 +17,10 @@ def main(time_steps):
 		exploration=exploration_schedule,
 		input_size=INPUT_SIZE,
 		num_actions=NUM_ACTIONS,
-		steps_limit=STEPS_LIMITS,
+		steps_limit=STEPS_LIMIT,
 		learning_rate=LEARNING_RATE,
 		batch_size=BATCH_SIZE,
-		target_update_freq=10000,
+		target_update_freq=TARGET_UPDATE_FREQ,
 	)
 
 	plot_loss(TrainReward)
@@ -27,6 +28,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 100001
+	time_steps = 4000001
 	# Run training
 	main(time_steps)

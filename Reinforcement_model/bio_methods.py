@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE, STDOUT
 from pathlib import Path
 from reinforcement_model import INPUT_SIZE
 
+
 NUM_OF_NODES = np.sqrt(INPUT_SIZE)
 parent_path = Path().resolve().parent
 parent_folder = parent_path / "reinforcement_data"
@@ -186,6 +187,15 @@ def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 	t_temp.name = nname
 	rgft_loc.add_child(t_temp, dist=new_branch_length)  # regrafting
 
+	# check for case when tree becomes rooted
+	# num of nodes (hopefully) = len(t_curr.get_descendants()) + 1
+	if NUM_OF_NODES != len(t_curr.get_descendants()) + 1:
+		print("UNROOTING: before unroot t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
+		t_curr.write(outfile="tree_before_unroot")
+		t_curr.unroot()
+		print("I DID UNROOT!")
+	print("t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
+	t_curr.write(outfile="tree_after_unroot")
 	return t_curr
 
 
@@ -216,20 +226,21 @@ def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
 
 # convert tree to weighted_adjacency_matrix
 def tree_to_matrix(bio_tree):
-	net = Phylo.to_networkx(bio_tree)
-	if net.number_of_nodes() != NUM_OF_NODES:
-		print("tree_to_matrix() in bio_methods")
-		print("net has "+str(net.number_of_nodes())+" nodes")
-		Phylo.draw_ascii(bio_tree)
+	graph = Phylo.to_networkx(bio_tree)
+
+	if graph.number_of_nodes() != NUM_OF_NODES:
+		print("tree_to_matrix() in bio_methods.py")
+		print("graph has " + str(graph.number_of_nodes()) + " nodes")
 		exit()
+
 	# matrix = networkx.adjacency_matrix(net)
-	matrix = nx.to_numpy_matrix(net)
+	matrix = nx.to_numpy_matrix(graph)
 	# makes a numpy array from 2-dim matrix
 	return np.asarray(matrix).reshape(-1)
 
 
 # returns the tree from the text file in the msa_num's folder
-def get_tree_from_msa(msa_path="data/training_datasets/82/"):
+def get_tree_from_msa(msa_path):
 	tree_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_tree_bionj.txt")
 
 	with open(tree_path, "r") as f:
@@ -261,7 +272,7 @@ def get_ete_and_bio_from_str(tree_str, msa_path):
 
 
 # calculating likelihood of tree, msa_num should be the folder number of its corresponding msa
-def get_likelihood_simple(tree_str, msa_path="data/training_datasets/82/", params=None):
+def get_likelihood_simple(tree_str, msa_path, params=None):
 	if params is None:
 		# taking the params required for likelihood calculation from the stats file in the msa_num's folder
 		freq, rates, pinv, alpha = calc_likelihood_params(msa_path)
@@ -272,7 +283,7 @@ def get_likelihood_simple(tree_str, msa_path="data/training_datasets/82/", param
 	return return_likelihood(tree_str, str(msa_path), rates, pinv, alpha, freq)
 
 
-def calc_likelihood_params(msa_path="data/training_datasets/82/"):
+def calc_likelihood_params(msa_path):
 	stats_path = parent_folder / (msa_path + "masked_species_real_msa.phy_phyml_stats_bionj.txt")
 	params_dict = parse_phyml_stats_output(stats_path)
 	freq, rates, pinv, alpha = [params_dict["fA"], params_dict["fC"], params_dict["fG"], params_dict["fT"]], [

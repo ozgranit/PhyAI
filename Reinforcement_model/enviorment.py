@@ -20,6 +20,8 @@ global current_tree_str
 global current_msa_path
 global current_likelihood
 global likelihood_params
+# TODO: remove, action-cnt is for debugging
+global action_cnt
 
 
 def n_from_int(n):
@@ -27,16 +29,16 @@ def n_from_int(n):
 	if n < 1 or n > 18:
 		return None
 	if n < 10:
-		return 'N00'+str(n.item())
-	return 'N0'+str(n.item())
+		return 'N00' + str(n.item())
+	return 'N0' + str(n.item())
 
 
 def sp_from_int(n):
 	# this method translates int to leaf node Sp{}
 	assert 0 <= n <= 19
 	if n < 10:
-		return 'Sp00'+str(n.item())
-	return 'Sp0'+str(n.item())
+		return 'Sp00' + str(n.item())
+	return 'Sp0' + str(n.item())
 
 
 def num_to_action(n):
@@ -47,10 +49,10 @@ def num_to_action(n):
 	# possible pairs: ('Sp000', 'Sp001')...('Sp019', 'Sp018')
 	# allow duplicates ('Sp000', 'Sp001') and ('Sp001', 'Sp000')
 	# 19 options for each sp times 20 taxa = 380 pairs
-	first = n // 20   # // means get int from division
+	first = n // 20  # // means get int from division
 	second = n % 20
 	if first == second:
-		return None, None   # no pairs of doubles allowed
+		return None, None  # no pairs of doubles allowed
 	return sp_from_int(first), sp_from_int(second)
 
 
@@ -72,12 +74,10 @@ def env_reset():
 	# make tree into matrix
 	# save tree for play_action method
 	# return matrix as vector numpy
-	global current_ete_tree
-	global current_tree_str
-	global current_bio_tree
-	global current_msa_path
-	global likelihood_params
-	global current_likelihood
+	global current_ete_tree, current_tree_str, current_bio_tree, current_msa_path
+	global likelihood_params, current_likelihood
+	# TODO: remove
+	global action_cnt
 
 	# setting a random folder from the different msa folders
 	set_random_msa_path()
@@ -91,16 +91,19 @@ def env_reset():
 	current_bio_tree = bio_tree
 	current_tree_str = tree_str
 
+	# TODO: remove, here for tracking
+	current_ete_tree.write(outfile="log_run/orig_tree_from_env_reset()", format=1)
+	action_cnt = 0
+	######################################
 	return torch.tensor(matrix)
 
 
 def play_action(state, action):
-	global current_likelihood
-	global current_ete_tree
-	global current_bio_tree
-	global current_tree_str
-	global current_msa_path
-	global likelihood_params
+	global current_likelihood, current_ete_tree, current_bio_tree
+	global current_tree_str, current_msa_path, likelihood_params
+
+	# TODO: remove
+	global action_cnt
 
 	# convert action to two nodes("sp000-sp019 or N1-N20")
 	cut_name, paste_name = num_to_action(action)
@@ -110,6 +113,12 @@ def play_action(state, action):
 	# use two nodes and old tree to get new tree
 	# print(current_ete_tree.get_ascii(show_internal=True))
 	# print("cut_name="+cut_name+" paste_name="+paste_name)
+	# TODO: remove, here for tracking
+	with open("log_run/tree_{}_cut={}_paste={}".format(action_cnt, cut_name, paste_name), "w") as f:
+		f.write(current_tree_str)
+	print("last_live_action_cnt={}".format(action_cnt))
+	action_cnt += 1
+	######################################
 	current_tree_str = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
 	current_ete_tree, current_bio_tree = bio_methods.get_ete_and_bio_from_str(current_tree_str, current_msa_path)
 
@@ -117,7 +126,8 @@ def play_action(state, action):
 	next_state = bio_methods.tree_to_matrix(current_bio_tree)
 
 	# calculating reward
-	new_likelihood = bio_methods.get_likelihood_simple(tree_str=current_tree_str, msa_path=current_msa_path, params=likelihood_params)
+	new_likelihood = bio_methods.get_likelihood_simple(tree_str=current_tree_str, msa_path=current_msa_path,
+	                                                   params=likelihood_params)
 	reward = new_likelihood - current_likelihood
 
 	current_likelihood = new_likelihood

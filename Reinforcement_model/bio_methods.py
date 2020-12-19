@@ -191,11 +191,11 @@ def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 	# num of nodes (hopefully) = len(t_curr.get_descendants()) + 1
 	if NUM_OF_NODES != len(t_curr.get_descendants()) + 1:
 		print("UNROOTING: before unroot t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
-		t_curr.write(outfile="tree_before_unroot")
+		t_curr.write(outfile="log_run/tree_before_unroot", format=1)
 		t_curr.unroot()
 		print("I DID UNROOT!")
 	print("t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
-	t_curr.write(outfile="tree_after_unroot")
+	t_curr.write(outfile="log_run/tree_after_unroot", format=1)
 	return t_curr
 
 
@@ -249,7 +249,9 @@ def get_tree_from_msa(msa_path):
 
 	# add_internal_names does not run over the file it is given
 	ete_tree, tree_copy = add_internal_names(tree_path, ete_tree)
-
+	#TODO: remove
+	ete_tree.write(outfile="log_run/tree_right_after_add_internal_names()", format=1)
+	##########
 	with open(tree_copy, "r") as f:
 		tree_str = f.read()
 	ete_tree.get_tree_root().name = "ROOT_LIKE"

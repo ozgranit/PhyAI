@@ -1,0 +1,29 @@
+******* Running on CPU *******
+last_live_action_cnt=0
+t_curr has 38 nodes
+last_live_action_cnt=1
+t_curr has 38 nodes
+last_live_action_cnt=2
+t_curr has 38 nodes
+last_live_action_cnt=3
+t_curr has 38 nodes
+last_live_action_cnt=4
+t_curr has 38 nodes
+last_live_action_cnt=5
+t_curr has 38 nodes
+last_live_action_cnt=6
+t_curr has 38 nodes
+last_live_action_cnt=7
+t_curr has 38 nodes
+last_live_action_cnt=8
+UNROOTING: before unroot t_curr has 39 nodes
+I DID UNROOT!
+t_curr has 38 nodes
+last_live_action_cnt=9
+t_curr has 38 nodes
+last_live_action_cnt=10
+UNROOTING: before unroot t_curr has 39 nodes
+I DID UNROOT!
+t_curr has 39 nodes
+tree_to_matrix() in bio_methods.py
+graph has 39 nodes

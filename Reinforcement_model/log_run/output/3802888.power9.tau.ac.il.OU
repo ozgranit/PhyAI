@@ -1,0 +1,79 @@
+******* Running on CPU *******
+last_live_action_cnt=0
+t_curr has 38 nodes
+last_live_action_cnt=1
+t_curr has 38 nodes
+last_live_action_cnt=2
+t_curr has 38 nodes
+last_live_action_cnt=3
+t_curr has 38 nodes
+last_live_action_cnt=4
+t_curr has 38 nodes
+last_live_action_cnt=5
+UNROOTING: before unroot t_curr has 39 nodes
+I DID UNROOT!
+t_curr has 38 nodes
+last_live_action_cnt=6
+t_curr has 38 nodes
+last_live_action_cnt=7
+t_curr has 38 nodes
+last_live_action_cnt=8
+t_curr has 38 nodes
+last_live_action_cnt=9
+t_curr has 38 nodes
+last_live_action_cnt=10
+t_curr has 38 nodes
+last_live_action_cnt=11
+t_curr has 38 nodes
+last_live_action_cnt=12
+t_curr has 38 nodes
+last_live_action_cnt=13
+t_curr has 38 nodes
+last_live_action_cnt=14
+t_curr has 38 nodes
+last_live_action_cnt=15
+t_curr has 38 nodes
+last_live_action_cnt=16
+t_curr has 38 nodes
+last_live_action_cnt=17
+t_curr has 38 nodes
+last_live_action_cnt=18
+t_curr has 38 nodes
+last_live_action_cnt=19
+t_curr has 38 nodes
+last_live_action_cnt=20
+t_curr has 38 nodes
+last_live_action_cnt=21
+t_curr has 38 nodes
+last_live_action_cnt=22
+t_curr has 38 nodes
+last_live_action_cnt=23
+t_curr has 38 nodes
+last_live_action_cnt=24
+t_curr has 38 nodes
+last_live_action_cnt=25
+t_curr has 38 nodes
+last_live_action_cnt=26
+t_curr has 38 nodes
+last_live_action_cnt=27
+t_curr has 38 nodes
+last_live_action_cnt=28
+t_curr has 38 nodes
+last_live_action_cnt=29
+t_curr has 38 nodes
+last_live_action_cnt=30
+t_curr has 38 nodes
+last_live_action_cnt=31
+t_curr has 38 nodes
+last_live_action_cnt=32
+t_curr has 38 nodes
+last_live_action_cnt=33
+t_curr has 38 nodes
+last_live_action_cnt=34
+t_curr has 38 nodes
+last_live_action_cnt=35
+UNROOTING: before unroot t_curr has 39 nodes
+I DID UNROOT!
+t_curr has 39 nodes
+tree_to_matrix() in bio_methods.py
+graph has 39 nodes

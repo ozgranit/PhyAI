@@ -150,7 +150,8 @@ def main():
 
 
 if __name__ == '__main__':
-	clean_all_step_file()
+	print(len(FEATURE_LIST))
+	# clean_all_step_file()
 	#split_test_train(file_path=r"..\data\learning_all_moves_step1.csv")
 	#get_train_batch()
 

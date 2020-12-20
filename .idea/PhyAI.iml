@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/regression_model" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/classification_model" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Reinforcement_model" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Reinforcement_model_keras" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (workshop)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

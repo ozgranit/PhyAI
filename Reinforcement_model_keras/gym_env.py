@@ -1,7 +1,7 @@
 import numpy as np
 import bio_methods
 import env_aux
-from reinforcement_model import INPUT_SIZE, NUM_NODES
+from rein_model import INPUT_SIZE, NUM_NODES
 import gym
 from gym import spaces
 

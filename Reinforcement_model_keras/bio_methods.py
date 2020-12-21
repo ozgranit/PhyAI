@@ -6,7 +6,7 @@ from Bio import Phylo
 from ete3 import Tree
 from subprocess import Popen, PIPE, STDOUT
 from pathlib import Path
-from reinforcement_model import INPUT_SIZE
+from rein_model import INPUT_SIZE
 
 
 NUM_OF_NODES = np.sqrt(INPUT_SIZE)

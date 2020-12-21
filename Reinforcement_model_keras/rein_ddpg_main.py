@@ -1,6 +1,6 @@
 import numpy as np
 import gym
-from reinforcement_model import NUM_ACTIONS
+from rein_model import NUM_ACTIONS
 from gym_env import PhyloTree
 
 from tensorflow.keras.models import Sequential, Model

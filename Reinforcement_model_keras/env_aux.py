@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-from reinforcement_model import INPUT_SIZE, NUM_NODES
+from rein_model import INPUT_SIZE, NUM_NODES
 
 from pathlib import Path
 
@@ -39,7 +39,8 @@ def sp_or_n(idx):
 
 
 def get_action_matrix():
-	matrix = np.zeros((NUM_NODES, NUM_NODES))
+	# 2D list, 39*39
+	matrix = [[0]*NUM_NODES]*NUM_NODES
 	# first 20 are Sp.. last 19 are N.
 	for row in range(NUM_NODES):
 		for col in range(NUM_NODES):

@@ -1,7 +1,6 @@
 import csv
-import random
-import torch
-import bio_methods
+import numpy as np
+from reinforcement_model import INPUT_SIZE, NUM_NODES
 
 from pathlib import Path
 
@@ -17,38 +16,41 @@ bio - for converting tree to matrix
 
 def n_from_int(n):
 	# this method translates int to internal node N{}
-	if n < 1 or n > 18:
-		return None
+	assert 20 <= n <= 38
+	n -= 19
 	if n < 10:
-		return 'N00' + str(n.item())
-	return 'N0' + str(n.item())
+		return 'N00' + str(n)
+	return 'N0' + str(n)
 
 
 def sp_from_int(n):
 	# this method translates int to leaf node Sp{}
 	assert 0 <= n <= 19
 	if n < 10:
-		return 'Sp00' + str(n.item())
-	return 'Sp0' + str(n.item())
+		return 'Sp00' + str(n)
+	return 'Sp0' + str(n)
 
 
-def num_to_action(n):
-	assert 0 <= n < 400
-	# 0 always defined as no-op, gives the model a chance to stay in place
-	if n == 0:
-		return None, None
-	# possible pairs: ('Sp000', 'Sp001')...('Sp019', 'Sp018')
-	# allow duplicates ('Sp000', 'Sp001') and ('Sp001', 'Sp000')
-	# 19 options for each sp times 20 taxa = 380 pairs
-	first = n // 20  # // means get int from division
-	second = n % 20
-	if first == second:
-		return None, None  # no pairs of doubles allowed
-	return sp_from_int(first), sp_from_int(second)
+def sp_or_n(idx):
+	if idx < 20:
+		return sp_from_int(idx)
+	else:
+		return n_from_int(idx)
+
+
+def get_action_matrix():
+	matrix = np.zeros((NUM_NODES, NUM_NODES))
+	# first 20 are Sp.. last 19 are N.
+	for row in range(NUM_NODES):
+		for col in range(NUM_NODES):
+			first = sp_or_n(row)
+			second = sp_or_n(col)
+			matrix[row][col] = (first, second)
+	return matrix
 
 
 def set_random_msa_path():
-	rand_row = random.randint(1, 2992)
+	rand_row = np.random.randint(1, 2992)
 	path = parent_folder / "data/sampled_datasets.csv"
 	with open(path, "r") as csv_file:
 		csv_reader = csv.reader(csv_file, delimiter=',')
@@ -57,4 +59,3 @@ def set_random_msa_path():
 				path = row[3]
 				current_msa_path = path[1:]
 				return current_msa_path
-

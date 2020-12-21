@@ -8,6 +8,9 @@ from gym import spaces
 
 class PhyloTree(gym.Env):
 
+	def render(self, mode='human'):
+		pass
+
 	def __init__(self):
 		self.current_ete_tree = None
 		self.current_bio_tree = None
@@ -24,7 +27,7 @@ class PhyloTree(gym.Env):
 		self.action_space = spaces.MultiDiscrete([NUM_NODES, NUM_NODES])
 
 		# high value is completely arbitrary, change 4000 to whatever
-		self.observation_space = spaces.Box(low=0.0, high=4000, shape=(INPUT_SIZE,), dtype=np.float32)
+		self.observation_space = spaces.Box(low=0.0, high=4000, shape=(NUM_NODES, NUM_NODES), dtype=np.float32)
 
 		self.state = None
 		self.reset()
@@ -79,3 +82,18 @@ class PhyloTree(gym.Env):
 		self.state = bio_methods.tree_to_matrix(self.current_bio_tree)
 
 		return self.state
+
+	def get_action(self, action_lst):
+		assert len(action_lst) == 2
+
+		# possible pairs: ('Sp000', 'Sp001')...('Sp019', 'Sp018')
+		# allow duplicates ('Sp000', 'Sp001') and ('Sp001', 'Sp000')
+		i = action_lst[0]
+		j = action_lst[1]
+		assert 0 <= i <= 38
+		assert 0 <= j <= 38
+		first, second = self.action_matrix[i][j]
+
+		if first == second:
+			return None, None  # no pairs of doubles allowed
+		return first, second

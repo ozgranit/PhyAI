@@ -9,7 +9,7 @@ TARGET_UPDATE_FREQ = 10000
 
 
 def main(time_steps):
-	exploration_schedule = LinearSchedule(2000000, 0.05)
+	exploration_schedule = LinearSchedule(2500000, 0.05)
 
 	TrainReward = dqn_learning(
 		q_func=DQN,
@@ -28,6 +28,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 4000001
+	time_steps = 5000001
 	# Run training
 	main(time_steps)

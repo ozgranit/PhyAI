@@ -21,7 +21,7 @@ global current_msa_path
 global current_likelihood
 global likelihood_params
 # TODO: remove, action-cnt is for debugging
-global action_cnt
+# global action_cnt
 
 
 def n_from_int(n):
@@ -77,7 +77,7 @@ def env_reset():
 	global current_ete_tree, current_tree_str, current_bio_tree, current_msa_path
 	global likelihood_params, current_likelihood
 	# TODO: remove
-	global action_cnt
+	# global action_cnt
 
 	# setting a random folder from the different msa folders
 	set_random_msa_path()
@@ -92,8 +92,8 @@ def env_reset():
 	current_tree_str = tree_str
 
 	# TODO: remove, here for tracking
-	current_ete_tree.write(outfile="log_run/orig_tree_from_env_reset()", format=1)
-	action_cnt = 0
+	current_ete_tree.write(outfile="log_run/orig_tree_from_env_reset()", format=1, format_root_node=True)
+	# action_cnt = 0
 	######################################
 	return torch.tensor(matrix)
 
@@ -103,21 +103,25 @@ def play_action(state, action):
 	global current_tree_str, current_msa_path, likelihood_params
 
 	# TODO: remove
-	global action_cnt
+	# global action_cnt
 
 	# convert action to two nodes("sp000-sp019 or N1-N20")
 	cut_name, paste_name = num_to_action(action)
 
 	if cut_name is None and paste_name is None:
 		return state, 0
+
+	if (current_ete_tree & cut_name).up.name == (current_ete_tree & paste_name).up.name:
+		# check cut and paste have the same parent node
+		return state, 0
 	# use two nodes and old tree to get new tree
 	# print(current_ete_tree.get_ascii(show_internal=True))
 	# print("cut_name="+cut_name+" paste_name="+paste_name)
 	# TODO: remove, here for tracking
-	with open("log_run/tree_{}_cut={}_paste={}".format(action_cnt, cut_name, paste_name), "w") as f:
-		f.write(current_tree_str)
-	print("last_live_action_cnt={}".format(action_cnt))
-	action_cnt += 1
+	# with open("log_run/tree_{}_cut={}_paste={}".format(action_cnt, cut_name, paste_name), "w") as f:
+	# 	f.write(current_tree_str)
+	# print("last_live_action_cnt={}".format(action_cnt))
+	# action_cnt += 1
 	######################################
 	current_tree_str = bio_methods.SPR_by_edge_names(current_ete_tree, cut_name, paste_name)
 	current_ete_tree, current_bio_tree = bio_methods.get_ete_and_bio_from_str(current_tree_str, current_msa_path)

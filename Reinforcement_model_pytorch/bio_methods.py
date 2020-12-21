@@ -50,8 +50,25 @@ def return_likelihood(tree, msa_file, rates, pinv, alpha, freq):
 		res_dict = parse_raxmlNG_content(raxml_output)
 		ll = res_dict['ll']
 
+	# check for 'rare' alpha value error, run again with different alpha
+	except AttributeError:
+		# float 0.5-8
+		new_alpha = np.random.uniform(0.5, 8)
+		model_line_params = 'GTR{rates}+I{pinv}+G{alpha}+F{freq}'.format(rates="{{{0}}}".format("/".join(rates)),
+		                                                                 pinv="{{{0}}}".format(pinv),
+		                                                                 alpha="{{{0}}}".format(new_alpha),
+		                                                                 freq="{{{0}}}".format("/".join(freq)))
+		p = Popen(
+			[RAXML_NG_SCRIPT, '--evaluate', '--msa', msa_file, '--threads', '1', '--opt-branches', 'on', '--opt-model',
+			 'off', '--model', model_line_params, '--nofiles', '--tree', tree_rampath],
+			stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+
+		raxml_stdout = p.communicate()[0]
+		raxml_output = raxml_stdout.decode()
+
+		res_dict = parse_raxmlNG_content(raxml_output)
+		ll = res_dict['ll']
 	except Exception as e:
-		# print(msa_file.split("/")[-1])
 		print(msa_file)
 		print(e)
 		print("return_likelihood() in bio_methods.py")
@@ -163,9 +180,20 @@ def prune_branch(t_orig, prune_name):
 	nname = prune_node_cp.up.name
 	prune_loc = prune_node_cp
 	prune_loc.detach()  # pruning: prune_node_cp is now the subtree we detached. t_cp_p is the one that was left behind
-	t_cp_p.search_nodes(name=nname)[0].delete(
-		preserve_branch_length=True)  # delete the specific node (without its childs) since after pruning this branch should not be divided
+	###########
+	if nname == t_cp_p.get_tree_root().name:
+		for n in t_cp_p.children:
+			tmp_tree = n
+			if n.name != prune_name:
+				outgroup = n.children[0]
+				n.set_outgroup(outgroup)
+				break
 
+		t_cp_p = tmp_tree
+	else:
+		t_cp_p.search_nodes(name=nname)[0].delete(
+			preserve_branch_length=True)  # delete the specific node (without its childs) since after pruning this branch should not be divided
+	###########
 	return nname, prune_node_cp, t_cp_p
 
 
@@ -190,16 +218,17 @@ def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 
 	# check for case when tree becomes rooted
 	# num of nodes (hopefully) = len(t_curr.get_descendants()) + 1
-	if NUM_OF_NODES != len(t_curr.get_descendants()) + 1:
-		print("UNROOTING: before unroot t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
-		t_curr.write(outfile="log_run/tree_before_unroot", format=1)
-		t_curr.unroot()
-		# next line checks for new created node we wnt to remove
-		nodes_to_preserve_lst = ["Sp" + (str(n)).zfill(3) for n in range(20)]
-		nodes_to_preserve_lst.extend(["N" + str(i) for i in range(1, 19)])
-		t_curr.prune(nodes_to_preserve_lst, preserve_branch_length=True)
-		print("I DID UNROOT!")
-		t_curr.write(outfile="log_run/tree_after_unroot", format=1)
+	# if NUM_OF_NODES != len(t_curr.get_descendants()) + 1:
+	# 	print("UNROOTING: before unroot t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
+	# 	t_curr.write(outfile="log_run/tree_before_unroot", format=1)
+	# 	t_curr.unroot()
+	# 	# next line checks for new created node we wnt to remove
+	# 	nodes_to_preserve_lst = ["Sp" + (str(n)).zfill(3) for n in range(20)]
+	# 	nodes_to_preserve_lst.extend(["N" + str(i) for i in range(1, 19)])
+	# 	t_curr.prune(nodes_to_preserve_lst, preserve_branch_length=True)
+	# 	print("I DID UNROOT!")
+	# TODO: remove
+	t_curr.write(outfile="log_run/tree_after_regraft", format=1, format_root_node=True)
 
 	return t_curr
 
@@ -208,7 +237,7 @@ def SPR_by_edge_names(ETEtree, cut_name, paste_name):
 	nname, subtree1, subtree2 = prune_branch(ETEtree,
 	                                         cut_name)  # subtree1 is the pruned subtree. subtree2 is the remaining subtree
 	rearr_tree_str = regraft_branch(subtree2, subtree1, paste_name, nname).write(
-		format=1)  # .write() is how you convert an ETEtree to newick string. now you can convert it back (if needed) using Tree(), or convert it to BIOtree
+		format=1, format_root_node=True)  # .write() is how you convert an ETEtree to newick string. now you can convert it back (if needed) using Tree(), or convert it to BIOtree
 
 	return rearr_tree_str
 
@@ -216,7 +245,8 @@ def SPR_by_edge_names(ETEtree, cut_name, paste_name):
 def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
 	# todo oz: I know you defined 'newfile_suffix' diferently (just None to runover?)
 	# for tree with ntaxa=20 there are 2n-3 nodes --> n-3=17 internal nodes. plus one ROOT_LIKE node ==> always 18 internal nodes.
-	N_lst = ["N{}".format(i) for i in range(1,19)]
+	#N_lst = ["N{}".format(i) for i in range(1,19)]
+	N_lst = ["N{}".format(i) for i in range(1,20)]
 	i = 0
 	for node in t_orig.traverse():
 		if not node.is_leaf():
@@ -224,7 +254,7 @@ def add_internal_names(tree_file, t_orig, newfile_suffix="_with_internal.txt"):
 			i += 1
 	# assuming tree file is a pathlib path
 	new_tree_file = tree_file.parent / (tree_file.name + newfile_suffix)
-	t_orig.write(format=3, outfile=new_tree_file)
+	t_orig.write(format=1, outfile=new_tree_file, format_root_node=True)
 
 	return t_orig, new_tree_file
 
@@ -251,15 +281,16 @@ def get_tree_from_msa(msa_path):
 	with open(tree_path, "r") as f:
 		tree_str = f.read()
 	ete_tree = Tree(newick=tree_str, format=1)
+	ete_tree.resolve_polytomy(recursive=False)
 
 	# add_internal_names does not run over the file it is given
 	ete_tree, tree_copy = add_internal_names(tree_path, ete_tree)
-	#TODO: remove
-	ete_tree.write(outfile="log_run/tree_right_after_add_internal_names()", format=1)
+	# TODO: remove
+	ete_tree.write(outfile="log_run/tree_right_after_add_internal_names()", format=1, format_root_node=True)
 	##########
 	with open(tree_copy, "r") as f:
 		tree_str = f.read()
-	ete_tree.get_tree_root().name = "ROOT_LIKE"
+
 	bio_tree = Phylo.read(tree_copy, "newick")
 	os.remove(tree_copy)
 	return ete_tree, bio_tree, tree_str
@@ -301,29 +332,25 @@ def calc_likelihood_params(msa_path):
 
 
 if __name__ == '__main__':
-	directoryname = "log_run/to_print"
-	directory = os.fsencode(directoryname)
-	for file in os.listdir(directory):
-		filename = os.fsdecode(file)
+	with open("log_run/tree_after_regraft", "r") as f:
+		tree_str = f.read()
+	msa_path = "/groups/itay_mayrose/danaazouri/PhyAI/ML_workshop/reinforcement_data/data/training_datasets/19078/"
+	likelihood_params = calc_likelihood_params(msa_path)
 
-		with open(os.path.join(directoryname, filename), "r") as f:
-			current_tree_str = f.read()
-			ete_tree = Tree(newick=current_tree_str, format=1)
-			print("\n"+filename+":\n\n")
-			print(ete_tree.get_ascii(show_internal=True))
+	print(get_likelihood_simple(tree_str, msa_path, likelihood_params))
 
-
-	# with open("log_run/tree_10_cut=Sp009_paste=Sp007", "r") as f:
-	# 	current_tree_str = f.read()
+	# directoryname = "log_run/to_print"
+	# directory = os.fsencode(directoryname)
+	# for file in os.listdir(directory):
+	# 	filename = os.fsdecode(file)
 	#
-	# ete_tree = Tree(newick=current_tree_str, format=1)
-	# print(ete_tree.get_ascii(show_internal=True))
+	# 	with open(os.path.join(directoryname, filename), "r") as f:
+	# 		current_tree_str = f.read()
+	# 		ete_tree = Tree(newick=current_tree_str, format=1)
+	# 		print("\n"+filename+":")
+	# 		print("root_name = " + ete_tree.get_tree_root().name + ":\n\n")
+	# 		print(ete_tree.get_ascii(show_internal=True))
 	#
-	# # a possible pair could NOT be something ELSE than all pair-combinations between [Sp000, ... , Sp0019] and [N1, ... , N18].  You can't know in advance which of THESE do exist (topology-dependant)
-	# neighbor_tree_str = SPR_by_edge_names(ete_tree, 'Sp009', 'Sp007')
-	#
-	# with open("tree_result", "w") as f:
-	# 	f.write(neighbor_tree_str)
 
 
 

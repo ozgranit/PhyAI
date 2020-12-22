@@ -18,9 +18,7 @@ def n_from_int(n):
 	# this method translates int to internal node N{}
 	assert 20 <= n <= 38
 	n -= 19
-	if n < 10:
-		return 'N00' + str(n)
-	return 'N0' + str(n)
+	return 'N' + str(n)
 
 
 def sp_from_int(n):
@@ -40,12 +38,12 @@ def sp_or_n(idx):
 
 def get_action_matrix():
 	# 2D list, 39*39
-	matrix = [[0]*NUM_NODES]*NUM_NODES
+	matrix = [[0] * NUM_NODES for i in range(NUM_NODES)]
 	# first 20 are Sp.. last 19 are N.
 	for row in range(NUM_NODES):
 		for col in range(NUM_NODES):
-			first = sp_or_n(row)
 			second = sp_or_n(col)
+			first = sp_or_n(row)
 			matrix[row][col] = (first, second)
 	return matrix
 

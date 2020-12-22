@@ -1,0 +1,1389 @@
+******* Running on CPU *******
+Load Q parameters ...
+Load Q_target parameters ...
+Load TrainReward.pkl ...
+-643.5632109999997
+Timestep 4000
+Saved Stats
+-722.8347650000005
+Timestep 5000
+Saved Stats
+-466.962579
+Timestep 6000
+Saved Stats
+-297.0782210000002
+Timestep 7000
+Saved Stats
+-643.2251199999992
+Timestep 8000
+Saved Stats
+-3900.6256649999996
+Timestep 9000
+Saved Stats
+-726.877348
+Timestep 10000
+Saved Stats
+-690.9114180000001
+Timestep 11000
+Saved Stats
+-2460.9426239999993
+Timestep 12000
+Saved Stats
+-255.13111099999992
+Timestep 13000
+Saved Stats
+-1572.8669909999999
+Timestep 14000
+Saved Stats
+-117.51309100000003
+Timestep 15000
+Saved Stats
+-491.93533100000013
+Timestep 16000
+Saved Stats
+-100.90699100000006
+Timestep 17000
+Saved Stats
+-3251.265161000003
+Timestep 18000
+Saved Stats
+-917.6489060000004
+Timestep 19000
+Saved Stats
+-515.7492729999999
+Timestep 20000
+Saved Stats
+-393.8387090000001
+Timestep 21000
+Saved Stats
+-108.27678700000001
+Timestep 22000
+Saved Stats
+-921.7820249999986
+Timestep 23000
+Saved Stats
+-1221.118778
+Timestep 24000
+Saved Stats
+-1125.6977640000005
+Timestep 25000
+Saved Stats
+-596.3754020000006
+Timestep 26000
+Saved Stats
+-1170.7356209999998
+Timestep 27000
+Saved Stats
+-1535.614672
+Timestep 28000
+Saved Stats
+-891.7068199999994
+Timestep 29000
+Saved Stats
+-588.7802610000001
+Timestep 30000
+Saved Stats
+-1724.3111929999977
+Timestep 31000
+Saved Stats
+-790.9458590000004
+Timestep 32000
+Saved Stats
+-444.57078200000024
+Timestep 33000
+Saved Stats
+-1733.7834359999997
+Timestep 34000
+Saved Stats
+-342.98581300000023
+Timestep 35000
+Saved Stats
+-1921.775418000001
+Timestep 36000
+Saved Stats
+-432.57367999999997
+Timestep 37000
+Saved Stats
+-830.4436140000003
+Timestep 38000
+Saved Stats
+-219.19871899999998
+Timestep 39000
+Saved Stats
+-816.1421729999997
+Timestep 40000
+Saved Stats
+-334.9065720000001
+Timestep 41000
+Saved Stats
+-521.1225459999996
+Timestep 42000
+Saved Stats
+-1450.3454040000006
+Timestep 43000
+Saved Stats
+-56.119126999999935
+Timestep 44000
+Saved Stats
+-2666.2753239999993
+Timestep 45000
+Saved Stats
+-217.59553000000005
+Timestep 46000
+Saved Stats
+-365.5240600000002
+Timestep 47000
+Saved Stats
+-304.4791879999998
+Timestep 48000
+Saved Stats
+-541.4052190000002
+Timestep 49000
+Saved Stats
+-1125.650501
+Timestep 50000
+Saved Stats
+-1188.207394
+Timestep 51000
+Saved Stats
+-1370.3779519999998
+Timestep 52000
+Saved Stats
+-1821.6972860000005
+Timestep 53000
+Saved Stats
+-457.033989
+Timestep 54000
+Saved Stats
+-20.17789300000001
+Timestep 55000
+Saved Stats
+-734.2011869999988
+Timestep 56000
+Saved Stats
+-1373.2372109999997
+Timestep 57000
+Saved Stats
+-884.0592669999987
+Timestep 58000
+Saved Stats
+-555.9573230000005
+Timestep 59000
+Saved Stats
+-136.41123100000004
+Timestep 60000
+Saved Stats
+-265.51078199999984
+Timestep 61000
+Saved Stats
+-1697.6981780000006
+Timestep 62000
+Saved Stats
+-1004.7991529999999
+Timestep 63000
+Saved Stats
+-1674.3895250000005
+Timestep 64000
+Saved Stats
+-2080.390031
+Timestep 65000
+Saved Stats
+-573.674943
+Timestep 66000
+Saved Stats
+-206.3870730000001
+Timestep 67000
+Saved Stats
+-812.0048349999997
+Timestep 68000
+Saved Stats
+-195.6537599999997
+Timestep 69000
+Saved Stats
+-1857.7115730000005
+Timestep 70000
+Saved Stats
+-1785.9302450000014
+Timestep 71000
+Saved Stats
+-325.2907070000001
+Timestep 72000
+Saved Stats
+-683.6185339999997
+Timestep 73000
+Saved Stats
+-90.41058900000007
+Timestep 74000
+Saved Stats
+-122.261394
+Timestep 75000
+Saved Stats
+-919.7113399999998
+Timestep 76000
+Saved Stats
+-3493.9259439999987
+Timestep 77000
+Saved Stats
+-760.9991190000001
+Timestep 78000
+Saved Stats
+-4246.364533
+Timestep 79000
+Saved Stats
+-663.1997139999999
+Timestep 80000
+Saved Stats
+-368.5031290000002
+Timestep 81000
+Saved Stats
+-753.6586510000002
+Timestep 82000
+Saved Stats
+-175.10957600000006
+Timestep 83000
+Saved Stats
+-432.95009200000004
+Timestep 84000
+Saved Stats
+-212.78136300000006
+Timestep 85000
+Saved Stats
+-993.8470719999987
+Timestep 86000
+Saved Stats
+-303.95688800000016
+Timestep 87000
+Saved Stats
+-178.94987599999968
+Timestep 88000
+Saved Stats
+-456.1333000000002
+Timestep 89000
+Saved Stats
+-385.92295899999954
+Timestep 90000
+Saved Stats
+-1167.3487949999999
+Timestep 91000
+Saved Stats
+-269.9191760000001
+Timestep 92000
+Saved Stats
+-286.186964
+Timestep 93000
+Saved Stats
+-701.0457670000001
+Timestep 94000
+Saved Stats
+-529.8128430000002
+Timestep 95000
+Saved Stats
+-248.1830030000001
+Timestep 96000
+Saved Stats
+-115.61861399999998
+Timestep 97000
+Saved Stats
+-2499.809857
+Timestep 98000
+Saved Stats
+-1967.7794880000001
+Timestep 99000
+Saved Stats
+-712.7506410000001
+Timestep 100000
+Saved Stats
+-97.26670000000013
+Timestep 101000
+Saved Stats
+-415.0252299999993
+Timestep 102000
+Saved Stats
+-378.10544600000003
+Timestep 103000
+Saved Stats
+-1884.9939299999996
+Timestep 104000
+Saved Stats
+-1194.2754920000002
+Timestep 105000
+Saved Stats
+-3188.532609000001
+Timestep 106000
+Saved Stats
+-1105.8104409999996
+Timestep 107000
+Saved Stats
+-250.18243699999994
+Timestep 108000
+Saved Stats
+-1210.1069779999998
+Timestep 109000
+Saved Stats
+-988.639956
+Timestep 110000
+Saved Stats
+-252.3955629999998
+Timestep 111000
+Saved Stats
+-320.3721180000002
+Timestep 112000
+Saved Stats
+-1649.0362700000005
+Timestep 113000
+Saved Stats
+-89.82216399999993
+Timestep 114000
+Saved Stats
+-74.09773599999994
+Timestep 115000
+Saved Stats
+-1192.9407270000002
+Timestep 116000
+Saved Stats
+-497.6854290000001
+Timestep 117000
+Saved Stats
+-519.16156
+Timestep 118000
+Saved Stats
+-707.7731490000006
+Timestep 119000
+Saved Stats
+-537.210838
+Timestep 120000
+Saved Stats
+-178.52163000000007
+Timestep 121000
+Saved Stats
+-823.6462849999998
+Timestep 122000
+Saved Stats
+-810.0668960000003
+Timestep 123000
+Saved Stats
+-338.38920200000007
+Timestep 124000
+Saved Stats
+-318.92235500000015
+Timestep 125000
+Saved Stats
+-647.3715609999999
+Timestep 126000
+Saved Stats
+-232.604777
+Timestep 127000
+Saved Stats
+-493.000225
+Timestep 128000
+Saved Stats
+-240.31313800000044
+Timestep 129000
+Saved Stats
+-205.0267630000003
+Timestep 130000
+Saved Stats
+-804.219329
+Timestep 131000
+Saved Stats
+-1035.906441
+Timestep 132000
+Saved Stats
+-550.229495
+Timestep 133000
+Saved Stats
+-576.5607819999996
+Timestep 134000
+Saved Stats
+-1887.9140100000004
+Timestep 135000
+Saved Stats
+-96.14739699999996
+Timestep 136000
+Saved Stats
+-498.98259800000005
+Timestep 137000
+Saved Stats
+-613.3561449999997
+Timestep 138000
+Saved Stats
+-127.42215899999997
+Timestep 139000
+Saved Stats
+-345.19256700000005
+Timestep 140000
+Saved Stats
+-1858.7025140000005
+Timestep 141000
+Saved Stats
+-746.317131
+Timestep 142000
+Saved Stats
+-931.6825469999999
+Timestep 143000
+Saved Stats
+-2204.015544
+Timestep 144000
+Saved Stats
+-1898.699643
+Timestep 145000
+Saved Stats
+-359.4668849999998
+Timestep 146000
+Saved Stats
+-467.9362589999996
+Timestep 147000
+Saved Stats
+-1378.214674
+Timestep 148000
+Saved Stats
+-1058.1758169999998
+Timestep 149000
+Saved Stats
+-228.60369199999968
+Timestep 150000
+Saved Stats
+-324.21539399999983
+Timestep 151000
+Saved Stats
+-1071.5478869999997
+Timestep 152000
+Saved Stats
+-317.224882
+Timestep 153000
+Saved Stats
+-704.6471689999998
+Timestep 154000
+Saved Stats
+-1594.3682169999993
+Timestep 155000
+Saved Stats
+-1015.7947039999999
+Timestep 156000
+Saved Stats
+-951.0030820000002
+Timestep 157000
+Saved Stats
+-207.809076
+Timestep 158000
+Saved Stats
+-1125.597687
+Timestep 159000
+Saved Stats
+-632.9364889999997
+Timestep 160000
+Saved Stats
+-312.8864389999999
+Timestep 161000
+Saved Stats
+-423.40316600000006
+Timestep 162000
+Saved Stats
+-1167.2026620000001
+Timestep 163000
+Saved Stats
+-242.06483899999967
+Timestep 164000
+Saved Stats
+-912.2894729999998
+Timestep 165000
+Saved Stats
+-1626.6338730000007
+Timestep 166000
+Saved Stats
+-1171.712857999999
+Timestep 167000
+Saved Stats
+-856.4154469999999
+Timestep 168000
+Saved Stats
+-2198.920855
+Timestep 169000
+Saved Stats
+-248.66975300000001
+Timestep 170000
+Saved Stats
+-1266.7293630000004
+Timestep 171000
+Saved Stats
+-635.9521599999998
+Timestep 172000
+Saved Stats
+-1267.7341650000017
+Timestep 173000
+Saved Stats
+-1437.2002900000007
+Timestep 174000
+Saved Stats
+-1755.671625
+Timestep 175000
+Saved Stats
+-649.2419419999997
+Timestep 176000
+Saved Stats
+-1099.791488
+Timestep 177000
+Saved Stats
+-995.648072
+Timestep 178000
+Saved Stats
+-535.2161700000001
+Timestep 179000
+Saved Stats
+-1452.0088750000004
+Timestep 180000
+Saved Stats
+-2013.7961759999998
+Timestep 181000
+Saved Stats
+-118.6896200000001
+Timestep 182000
+Saved Stats
+-676.6043319999999
+Timestep 183000
+Saved Stats
+-1291.727199
+Timestep 184000
+Saved Stats
+-131.47922799999992
+Timestep 185000
+Saved Stats
+-741.8951179999999
+Timestep 186000
+Saved Stats
+-516.451731
+Timestep 187000
+Saved Stats
+-1506.4981659999994
+Timestep 188000
+Saved Stats
+-306.58162999999877
+Timestep 189000
+Saved Stats
+-175.73114499999997
+Timestep 190000
+Saved Stats
+-4113.087955999999
+Timestep 191000
+Saved Stats
+-1400.568016000001
+Timestep 192000
+Saved Stats
+-327.3453559999998
+Timestep 193000
+Saved Stats
+-3344.1715409999997
+Timestep 194000
+Saved Stats
+-1274.2152630000019
+Timestep 195000
+Saved Stats
+-806.3696879999989
+Timestep 196000
+Saved Stats
+-1929.335278999999
+Timestep 197000
+Saved Stats
+-1612.6108060000006
+Timestep 198000
+Saved Stats
+-318.71814300000005
+Timestep 199000
+Saved Stats
+-2105.8211039999997
+Timestep 200000
+Saved Stats
+-197.12713200000002
+Timestep 201000
+Saved Stats
+-788.264846
+Timestep 202000
+Saved Stats
+-558.0211509999999
+Timestep 203000
+Saved Stats
+-1076.976424
+Timestep 204000
+Saved Stats
+-663.158484
+Timestep 205000
+Saved Stats
+-73.6488240000001
+Timestep 206000
+Saved Stats
+-476.47354399999995
+Timestep 207000
+Saved Stats
+-289.2403419999996
+Timestep 208000
+Saved Stats
+-1504.9829070000005
+Timestep 209000
+Saved Stats
+-1456.5972939999992
+Timestep 210000
+Saved Stats
+-463.90539499999977
+Timestep 211000
+Saved Stats
+-33.75159699999995
+Timestep 212000
+Saved Stats
+-874.667387
+Timestep 213000
+Saved Stats
+-411.317939
+Timestep 214000
+Saved Stats
+-498.75496299999986
+Timestep 215000
+Saved Stats
+-1516.3166039999996
+Timestep 216000
+Saved Stats
+-640.9507469999999
+Timestep 217000
+Saved Stats
+-529.301661
+Timestep 218000
+Saved Stats
+-1400.6606379999998
+Timestep 219000
+Saved Stats
+-1304.492926
+Timestep 220000
+Saved Stats
+-1318.1865269999998
+Timestep 221000
+Saved Stats
+-240.2776090000002
+Timestep 222000
+Saved Stats
+-1395.4490529999994
+Timestep 223000
+Saved Stats
+-438.44121799999994
+Timestep 224000
+Saved Stats
+-1143.6708800000006
+Timestep 225000
+Saved Stats
+-763.0074249999998
+Timestep 226000
+Saved Stats
+-716.1370120000001
+Timestep 227000
+Saved Stats
+-926.3088809999999
+Timestep 228000
+Saved Stats
+-875.8415749999999
+Timestep 229000
+Saved Stats
+-947.2989720000005
+Timestep 230000
+Saved Stats
+-1174.0929019999994
+Timestep 231000
+Saved Stats
+-2460.045373
+Timestep 232000
+Saved Stats
+-459.25464400000055
+Timestep 233000
+Saved Stats
+-381.5625479999999
+Timestep 234000
+Saved Stats
+-618.1273000000001
+Timestep 235000
+Saved Stats
+-569.9959789999998
+Timestep 236000
+Saved Stats
+-974.2489919999989
+Timestep 237000
+Saved Stats
+-230.3515299999999
+Timestep 238000
+Saved Stats
+-372.51646800000003
+Timestep 239000
+Saved Stats
+-1103.452968
+Timestep 240000
+Saved Stats
+-1101.595311
+Timestep 241000
+Saved Stats
+-897.4656880000002
+Timestep 242000
+Saved Stats
+-275.9812259999999
+Timestep 243000
+Saved Stats
+-462.35347200000024
+Timestep 244000
+Saved Stats
+-1910.7058580000003
+Timestep 245000
+Saved Stats
+-287.722659
+Timestep 246000
+Saved Stats
+-791.4321970000001
+Timestep 247000
+Saved Stats
+-770.486441
+Timestep 248000
+Saved Stats
+-451.522191
+Timestep 249000
+Saved Stats
+-712.5036970000001
+Timestep 250000
+Saved Stats
+-818.3554859999999
+Timestep 251000
+Saved Stats
+-161.29189199999996
+Timestep 252000
+Saved Stats
+-260.73508900000024
+Timestep 253000
+Saved Stats
+-785.32025
+Timestep 254000
+Saved Stats
+-249.2507569999998
+Timestep 255000
+Saved Stats
+-3249.2326940000003
+Timestep 256000
+Saved Stats
+-484.53058
+Timestep 257000
+Saved Stats
+-230.67666099999997
+Timestep 258000
+Saved Stats
+-154.56680300000016
+Timestep 259000
+Saved Stats
+-5769.772477
+Timestep 260000
+Saved Stats
+-1376.0157310000004
+Timestep 261000
+Saved Stats
+-248.97360600000002
+Timestep 262000
+Saved Stats
+-1634.6052950000003
+Timestep 263000
+Saved Stats
+-1122.6348520000001
+Timestep 264000
+Saved Stats
+-2321.419726
+Timestep 265000
+Saved Stats
+-1445.1383590000003
+Timestep 266000
+Saved Stats
+-795.6695490000002
+Timestep 267000
+Saved Stats
+-269.4246170000001
+Timestep 268000
+Saved Stats
+-1680.6979169999995
+Timestep 269000
+Saved Stats
+-910.4512099999993
+Timestep 270000
+Saved Stats
+-92.50206100000003
+Timestep 271000
+Saved Stats
+-707.0471750000002
+Timestep 272000
+Saved Stats
+-919.4223009999996
+Timestep 273000
+Saved Stats
+-1026.2248199999995
+Timestep 274000
+Saved Stats
+-870.301211
+Timestep 275000
+Saved Stats
+-1628.33813
+Timestep 276000
+Saved Stats
+-342.853063
+Timestep 277000
+Saved Stats
+-1329.062648
+Timestep 278000
+Saved Stats
+-416.966367
+Timestep 279000
+Saved Stats
+-591.41935
+Timestep 280000
+Saved Stats
+-343.90190099999995
+Timestep 281000
+Saved Stats
+-1283.0556609999999
+Timestep 282000
+Saved Stats
+-38.17697199999998
+Timestep 283000
+Saved Stats
+-1054.5895379999984
+Timestep 284000
+Saved Stats
+-461.47124699999995
+Timestep 285000
+Saved Stats
+-304.3635989999998
+Timestep 286000
+Saved Stats
+-542.9111789999997
+Timestep 287000
+Saved Stats
+-1650.346829
+Timestep 288000
+Saved Stats
+-179.0347039999997
+Timestep 289000
+Saved Stats
+-232.99012800000037
+Timestep 290000
+Saved Stats
+-386.53644799999984
+Timestep 291000
+Saved Stats
+-164.78754200000003
+Timestep 292000
+Saved Stats
+-1421.6174260000007
+Timestep 293000
+Saved Stats
+-173.32003900000018
+Timestep 294000
+Saved Stats
+-1718.8523710000009
+Timestep 295000
+Saved Stats
+-1346.5023899999997
+Timestep 296000
+Saved Stats
+-2499.858469999999
+Timestep 297000
+Saved Stats
+-2100.155462999999
+Timestep 298000
+Saved Stats
+-984.4902689999999
+Timestep 299000
+Saved Stats
+-134.697045
+Timestep 300000
+Saved Stats
+-501.0280279999997
+Timestep 301000
+Saved Stats
+-1142.4212589999997
+Timestep 302000
+Saved Stats
+-145.74804499999982
+Timestep 303000
+Saved Stats
+-356.67395599999986
+Timestep 304000
+Saved Stats
+-384.73927700000013
+Timestep 305000
+Saved Stats
+-130.0075119999999
+Timestep 306000
+Saved Stats
+-2300.0939979999985
+Timestep 307000
+Saved Stats
+-174.11753199999976
+Timestep 308000
+Saved Stats
+-235.88232099999993
+Timestep 309000
+Saved Stats
+-419.8129949999998
+Timestep 310000
+Saved Stats
+-893.2040569999999
+Timestep 311000
+Saved Stats
+-293.5779870000001
+Timestep 312000
+Saved Stats
+-624.9693309999998
+Timestep 313000
+Saved Stats
+-513.1071370000002
+Timestep 314000
+Saved Stats
+-637.2155480000001
+Timestep 315000
+Saved Stats
+-1076.0258240000003
+Timestep 316000
+Saved Stats
+-1240.0433220000004
+Timestep 317000
+Saved Stats
+-1129.8632699999998
+Timestep 318000
+Saved Stats
+-927.9240749999999
+Timestep 319000
+Saved Stats
+-2268.216998
+Timestep 320000
+Saved Stats
+-610.264365
+Timestep 321000
+Saved Stats
+-781.7468299999996
+Timestep 322000
+Saved Stats
+-480.5198989999999
+Timestep 323000
+Saved Stats
+-2976.3574699999954
+Timestep 324000
+Saved Stats
+-39.792371
+Timestep 325000
+Saved Stats
+-1483.0611330000002
+Timestep 326000
+Saved Stats
+-3215.5509930000007
+Timestep 327000
+Saved Stats
+-561.6438080000007
+Timestep 328000
+Saved Stats
+-1252.6264490000003
+Timestep 329000
+Saved Stats
+-404.9430120000002
+Timestep 330000
+Saved Stats
+-3439.856947
+Timestep 331000
+Saved Stats
+-51.20545100000004
+Timestep 332000
+Saved Stats
+-101.82553999999982
+Timestep 333000
+Saved Stats
+-183.8543380000001
+Timestep 334000
+Saved Stats
+-580.3546179999998
+Timestep 335000
+Saved Stats
+-601.5446550000001
+Timestep 336000
+Saved Stats
+-2493.816837999999
+Timestep 337000
+Saved Stats
+-636.9404000000002
+Timestep 338000
+Saved Stats
+-752.5120080000002
+Timestep 339000
+Saved Stats
+-1108.4367170000003
+Timestep 340000
+Saved Stats
+-1035.6774079999996
+Timestep 341000
+Saved Stats
+-661.0927230000002
+Timestep 342000
+Saved Stats
+-882.8557579999997
+Timestep 343000
+Saved Stats
+-1064.9130890000006
+Timestep 344000
+Saved Stats
+-602.6138619999997
+Timestep 345000
+Saved Stats
+-768.7835569999997
+Timestep 346000
+Saved Stats
+-602.3050939999998
+Timestep 347000
+Saved Stats
+-534.5217439999997
+Timestep 348000
+Saved Stats
+-630.8214229999994
+Timestep 349000
+Saved Stats
+-981.3676099999993
+Timestep 350000
+Saved Stats
+-436.7536620000003
+Timestep 351000
+Saved Stats
+-78.15800899999999
+Timestep 352000
+Saved Stats
+-227.48083000000042
+Timestep 353000
+Saved Stats
+-462.7607519999997
+Timestep 354000
+Saved Stats
+-1333.6429709999998
+Timestep 355000
+Saved Stats
+-1625.3549870000006
+Timestep 356000
+Saved Stats
+-1598.8885030000001
+Timestep 357000
+Saved Stats
+-478.7538669999999
+Timestep 358000
+Saved Stats
+-850.6159539999999
+Timestep 359000
+Saved Stats
+-336.7806760000003
+Timestep 360000
+Saved Stats
+-780.2130890000001
+Timestep 361000
+Saved Stats
+-186.9814709999996
+Timestep 362000
+Saved Stats
+-361.44387699999993
+Timestep 363000
+Saved Stats
+-467.8864370000001
+Timestep 364000
+Saved Stats
+-418.62069199999996
+Timestep 365000
+Saved Stats
+-591.1965049999999
+Timestep 366000
+Saved Stats
+-895.4092020000007
+Timestep 367000
+Saved Stats
+-1013.3847580000001
+Timestep 368000
+Saved Stats
+-549.4557520000001
+Timestep 369000
+Saved Stats
+-704.2656530000002
+Timestep 370000
+Saved Stats
+-2817.9531880000004
+Timestep 371000
+Saved Stats
+-349.83969799999977
+Timestep 372000
+Saved Stats
+-209.54214000000002
+Timestep 373000
+Saved Stats
+-100.201704
+Timestep 374000
+Saved Stats
+-539.0240079999999
+Timestep 375000
+Saved Stats
+-261.2462720000001
+Timestep 376000
+Saved Stats
+-220.2397079999996
+Timestep 377000
+Saved Stats
+-3796.603097
+Timestep 378000
+Saved Stats
+-138.35717299999988
+Timestep 379000
+Saved Stats
+-287.83782699999983
+Timestep 380000
+Saved Stats
+-30.40910600000001
+Timestep 381000
+Saved Stats
+-290.7353420000002
+Timestep 382000
+Saved Stats
+-799.8034500000003
+Timestep 383000
+Saved Stats
+-1224.1262299999999
+Timestep 384000
+Saved Stats
+-246.90751999999998
+Timestep 385000
+Saved Stats
+-4669.069218
+Timestep 386000
+Saved Stats
+-2196.0098869999993
+Timestep 387000
+Saved Stats
+-121.28732200000013
+Timestep 388000
+Saved Stats
+-756.8344830000005
+Timestep 389000
+Saved Stats
+-1484.6666289999994
+Timestep 390000
+Saved Stats
+-367.89575800000057
+Timestep 391000
+Saved Stats
+-269.86887000000024
+Timestep 392000
+Saved Stats
+-595.006527
+Timestep 393000
+Saved Stats
+-704.6983539999999
+Timestep 394000
+Saved Stats
+-663.421816
+Timestep 395000
+Saved Stats
+-420.237881
+Timestep 396000
+Saved Stats
+-104.3466540000004
+Timestep 397000
+Saved Stats
+-668.6054340000001
+Timestep 398000
+Saved Stats
+-255.78543100000024
+Timestep 399000
+Saved Stats
+-1072.2319929999994
+Timestep 400000
+Saved Stats
+-342.2962769999999
+Timestep 401000
+Saved Stats
+-4851.993681
+Timestep 402000
+Saved Stats
+-419.56898999999976
+Timestep 403000
+Saved Stats
+-3666.408431
+Timestep 404000
+Saved Stats
+-4903.215997
+Timestep 405000
+Saved Stats
+-289.2597210000001
+Timestep 406000
+Saved Stats
+-246.27819299999965
+Timestep 407000
+Saved Stats
+-788.6341339999999
+Timestep 408000
+Saved Stats
+-696.5912120000003
+Timestep 409000
+Saved Stats
+-4757.227101
+Timestep 410000
+Saved Stats
+-1573.3640680000003
+Timestep 411000
+Saved Stats
+-554.5772809999999
+Timestep 412000
+Saved Stats
+-26.815112
+Timestep 413000
+Saved Stats
+-304.76181699999984
+Timestep 414000
+Saved Stats
+-1351.3497630000002
+Timestep 415000
+Saved Stats
+-2418.1514129999996
+Timestep 416000
+Saved Stats
+-740.0683289999988
+Timestep 417000
+Saved Stats
+-877.7018540000008
+Timestep 418000
+Saved Stats
+-575.961292
+Timestep 419000
+Saved Stats
+-1936.9663389999996
+Timestep 420000
+Saved Stats
+-813.3941329999998
+Timestep 421000
+Saved Stats
+-317.6117219999999
+Timestep 422000
+Saved Stats
+-400.5186240000003
+Timestep 423000
+Saved Stats
+-406.4558640000005
+Timestep 424000
+Saved Stats
+-365.08170999999993
+Timestep 425000
+Saved Stats
+-191.83819799999992
+Timestep 426000
+Saved Stats
+-305.5302230000002
+Timestep 427000
+Saved Stats
+-573.5719669999999
+Timestep 428000
+Saved Stats
+-370.4465109999999
+Timestep 429000
+Saved Stats
+-211.88556999999992
+Timestep 430000
+Saved Stats
+-1919.1578090000003
+Timestep 431000
+Saved Stats
+-659.671006999999
+Timestep 432000
+Saved Stats
+-43.49934399999984
+Timestep 433000
+Saved Stats
+-1134.1255929999998
+Timestep 434000
+Saved Stats
+-1392.495629
+Timestep 435000
+Saved Stats
+-351.0102240000001
+Timestep 436000
+Saved Stats
+-2217.2090739999985
+Timestep 437000
+Saved Stats
+-1462.599083000001
+Timestep 438000
+Saved Stats
+-62.13310200000001
+Timestep 439000
+Saved Stats
+-1503.7579840000008
+Timestep 440000
+Saved Stats
+-228.58766100000003
+Timestep 441000
+Saved Stats
+-1690.8012429999999
+Timestep 442000
+Saved Stats
+-927.0757859999999
+Timestep 443000
+Saved Stats
+-295.6297939999995
+Timestep 444000
+Saved Stats
+-843.046604000001
+Timestep 445000
+Saved Stats
+-70.24178499999994
+Timestep 446000
+Saved Stats
+-506.15528399999994
+Timestep 447000
+Saved Stats
+-146.83830500000022
+Timestep 448000
+Saved Stats
+-146.5679329999998
+Timestep 449000
+Saved Stats
+-325.90389400000004
+Timestep 450000
+Saved Stats
+-518.449585
+Timestep 451000
+Saved Stats
+-75.91722200000004
+Timestep 452000
+Saved Stats
+-190.83186899999987
+Timestep 453000
+Saved Stats
+-533.459492
+Timestep 454000
+Saved Stats
+-3976.170918
+Timestep 455000
+Saved Stats
+-536.6975230000003
+Timestep 456000
+Saved Stats
+-208.03235500000005
+Timestep 457000
+Saved Stats
+-2320.598740999999
+Timestep 458000
+Saved Stats
+-893.7034179999991
+Timestep 459000
+Saved Stats
+-1696.4322519999996
+Timestep 460000
+Saved Stats
+-399.7240920000004
+Timestep 461000
+Saved Stats
+-339.73806000000013
+Timestep 462000
+Saved Stats
+-239.01662400000004
+Timestep 463000
+Saved Stats
+-724.2616469999994
+Timestep 464000
+Saved Stats
+-116.04105799999991
+Timestep 465000

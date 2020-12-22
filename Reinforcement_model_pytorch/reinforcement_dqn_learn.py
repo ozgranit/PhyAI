@@ -80,7 +80,7 @@ def dqn_learning(
 	criterion = nn.L1Loss()
 	optimizer = optim.Adam(Q.parameters(), lr=learning_rate)
 
-	LOG_EVERY_N_STEPS = 1000
+	LOG_EVERY_N_STEPS = 100000
 
 	# reset environment
 	state = env_reset()

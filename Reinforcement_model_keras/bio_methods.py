@@ -1,6 +1,5 @@
 import re, os
 import numpy as np
-import pandas as pd
 import networkx as nx
 from Bio import Phylo
 from ete3 import Tree
@@ -216,17 +215,6 @@ def regraft_branch(t_cp_p, prune_node_cp, rgft_name, nname):
 	t_temp.name = nname
 	rgft_loc.add_child(t_temp, dist=new_branch_length)  # regrafting
 
-	# check for case when tree becomes rooted
-	# num of nodes (hopefully) = len(t_curr.get_descendants()) + 1
-	# if NUM_OF_NODES != len(t_curr.get_descendants()) + 1:
-	# 	print("UNROOTING: before unroot t_curr has " + str(len(t_curr.get_descendants()) + 1) + " nodes")
-	# 	t_curr.write(outfile="log_run/tree_before_unroot", format=1)
-	# 	t_curr.unroot()
-	# 	# next line checks for new created node we wnt to remove
-	# 	nodes_to_preserve_lst = ["Sp" + (str(n)).zfill(3) for n in range(20)]
-	# 	nodes_to_preserve_lst.extend(["N" + str(i) for i in range(1, 19)])
-	# 	t_curr.prune(nodes_to_preserve_lst, preserve_branch_length=True)
-	# 	print("I DID UNROOT!")
 	# TODO: remove
 	t_curr.write(outfile="log_run/tree_after_regraft", format=1, format_root_node=True)
 

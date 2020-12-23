@@ -101,7 +101,7 @@ class PhyloTree(gym.Env):
 		if (self.current_ete_tree & cut_name).up.name == paste_name:
 			# trying to cut and paste back to same location
 			return False
-		if self.current_ete_tree.get_tree_root().name == cut_name:  # or self.current_ete_tree.get_tree_root().name == paste_name:
+		if self.current_ete_tree.get_tree_root().name == cut_name or self.current_ete_tree.get_tree_root().name == paste_name:
 			# trying to cut at the root
 			return False
 		if (self.current_ete_tree & cut_name).up.name == (self.current_ete_tree & paste_name).up.name:

@@ -21,20 +21,20 @@ class SaveAndPlot(Callback):
 
         print('Step {}: saving model to {}'.format(self.total_steps, self.filepath))
         self.model.save_weights(self.filepath, overwrite=True)
-        save_and_plot_reward(self.episode_rewards)
+        save_and_plot_reward(self.episode_rewards, self.total_steps)
 
     def on_episode_end(self, episode, logs):
         """ Update reward value at the end of each episode """
         self.episode_rewards.append(logs['episode_reward'])
 
 
-def plot_loss(TrainReward):
+def plot_loss(TrainReward, timestep):
     plt.clf()
     plt.xlabel('Sessions')
     plt.ylabel('Reward, Summed over entire session')
     plt.plot(range(len(TrainReward)), TrainReward, label="Train-Reward")
     plt.legend()
-    plt.title("Performance")
+    plt.title("Performance, timstep={}".format(timestep))
     plt.savefig('Duel-DQN-Performance.png')
 
 
@@ -49,10 +49,10 @@ def load_reward():
     return TrainReward
 
 
-def save_and_plot_reward(TrainReward):
+def save_and_plot_reward(TrainReward, timestep):
     TRAIN_REWARD_FILE = 'TrainReward.pkl'
     # Dump statistics to pickle
     with open(TRAIN_REWARD_FILE, 'wb') as f:
         # save time_step as last item at lst
         pickle.dump(TrainReward, f)
-    plot_loss(TrainReward)
+    plot_loss(TrainReward, timestep)

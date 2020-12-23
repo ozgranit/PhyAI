@@ -3,9 +3,12 @@ import os
 from gym_env import PhyloTree
 from duel_dqn_utils import SaveAndPlot
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Flatten
-from tensorflow.keras.optimizers import Adam
+#from tensorflow.python.keras.models import Sequential
+from keras.models import Sequential
+# from tensorflow.python.keras.layers import Dense, Activation, Flatten
+from keras.layers import Dense, Activation, Flatten
+#from tensorflow.python.keras.optimizers import Adam
+from keras.optimizers import Adam
 
 from rl.agents.dqn import DQNAgent
 from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
@@ -13,10 +16,10 @@ from rl.memory import SequentialMemory
 
 LEARNING_RATE = 1e-5
 GAMMA = .999
-STEPS_LIMIT = 5
-MEM_SIZE = 100000
-TARGET_UPDATE_FREQ = 10000
-HIDDEN_LAYER = 16
+STEPS_LIMIT = 200
+MEM_SIZE = 200000
+TARGET_UPDATE_FREQ = 20000
+HIDDEN_LAYER = 512
 
 ENV_NAME = 'PhyloTree'
 WEIGHT_FILENAME = 'duel_dqn_{}_weights.h5f'.format(ENV_NAME)
@@ -45,7 +48,7 @@ def main(time_steps):
 	print(model.summary())
 
 	memory = SequentialMemory(limit=MEM_SIZE, window_length=1)
-	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.1, value_test=0, nb_steps=time_steps*0.75)
+	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.1, value_test=0, nb_steps=time_steps/2)
 	# enable the dueling network
 	# you can specify the dueling_type to one of {'avg','max','naive'}
 	dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=50, gamma=GAMMA, enable_double_dqn=True,
@@ -71,6 +74,6 @@ def main(time_steps):
 
 if __name__ == '__main__':
 
-	time_steps = 50
+	time_steps = 4000000
 	# Run training
 	main(time_steps)

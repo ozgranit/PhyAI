@@ -9,8 +9,8 @@ class SaveAndPlot(Callback):
         super().__init__()
         self.filepath = filepath
         self.interval = interval
-        self.episode_rewards = load_reward()
-        self.total_steps = 0
+        self.total_steps, self.episode_rewards = load_reward()
+
 
     def on_step_end(self, step, logs={}):
         """ Save weights at interval steps during training """
@@ -39,14 +39,17 @@ def plot_loss(TrainReward, timestep):
 
 
 def load_reward():
+    start = 0
     TrainReward = []
 
     TRAIN_REWARD_FILE = 'TrainReward.pkl'
     if os.path.isfile(TRAIN_REWARD_FILE):
         with open(TRAIN_REWARD_FILE, 'rb') as f:
             TrainReward = pickle.load(f)
+            # stored start as last value, pop removes last val from lst
+            start = TrainReward.pop()
             print('Load %s ...' % TRAIN_REWARD_FILE)
-    return TrainReward
+    return start, TrainReward
 
 
 def save_and_plot_reward(TrainReward, timestep):
@@ -54,5 +57,8 @@ def save_and_plot_reward(TrainReward, timestep):
     # Dump statistics to pickle
     with open(TRAIN_REWARD_FILE, 'wb') as f:
         # save time_step as last item at lst
+        TrainReward.append(timestep)
         pickle.dump(TrainReward, f)
+        # remove time_step (last item) from lst
+        TrainReward.pop()
     plot_loss(TrainReward, timestep)

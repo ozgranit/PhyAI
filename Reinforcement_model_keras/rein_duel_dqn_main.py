@@ -3,27 +3,28 @@ import os
 from gym_env import PhyloTree
 from duel_dqn_utils import SaveAndPlot
 
-#from tensorflow.python.keras.models import Sequential
-from keras.models import Sequential
-# from tensorflow.python.keras.layers import Dense, Activation, Flatten
-from keras.layers import Dense, Activation, Flatten
-#from tensorflow.python.keras.optimizers import Adam
-from keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.optimizers import Adam
+
+# from keras.models import Sequential
+# from keras.layers import Dense, Activation, Flatten
+# from keras.optimizers import Adam
 
 from rl.agents.dqn import DQNAgent
 from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
-LEARNING_RATE = 1e-5
+LEARNING_RATE = 1e-4
 GAMMA = .999
-STEPS_LIMIT = 200
-MEM_SIZE = 200000
-TARGET_UPDATE_FREQ = 20000
-HIDDEN_LAYER = 512
+STEPS_LIMIT = 40
+MEM_SIZE = 25000
+TARGET_UPDATE_FREQ = 10000
+HIDDEN_LAYER = 40
 
 ENV_NAME = 'PhyloTree'
 WEIGHT_FILENAME = 'duel_dqn_{}_weights.h5f'.format(ENV_NAME)
-LOG_EVERY_N_STEPS = 100000
+LOG_EVERY_N_STEPS = 20000
 
 
 def main(time_steps):
@@ -48,7 +49,7 @@ def main(time_steps):
 	print(model.summary())
 
 	memory = SequentialMemory(limit=MEM_SIZE, window_length=1)
-	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.1, value_test=0, nb_steps=time_steps/2)
+	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.001, value_test=0, nb_steps=time_steps/4)
 	# enable the dueling network
 	# you can specify the dueling_type to one of {'avg','max','naive'}
 	dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=50, gamma=GAMMA, enable_double_dqn=True,
@@ -73,7 +74,10 @@ def main(time_steps):
 
 
 if __name__ == '__main__':
-
-	time_steps = 4000000
+	"""problems:
+			1. negative loss is too great compared to positive loss, need to clip.
+			2. good actions are very rare and there are 1521 actions, we need to start from experience replay.
+	"""
+	time_steps = 250001
 	# Run training
 	main(time_steps)

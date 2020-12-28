@@ -49,7 +49,7 @@ def main(time_steps):
 	print(model.summary())
 
 	memory = SequentialMemory(limit=MEM_SIZE, window_length=1)
-	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.001, value_test=0, nb_steps=time_steps/4)
+	policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=.001, value_min=.0001, value_test=0, nb_steps=time_steps/4)
 	# enable the dueling network
 	# you can specify the dueling_type to one of {'avg','max','naive'}
 	dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=50, gamma=GAMMA, enable_double_dqn=True,
@@ -78,6 +78,6 @@ if __name__ == '__main__':
 			1. negative loss is too great compared to positive loss, need to clip.
 			2. good actions are very rare and there are 1521 actions, we need to start from experience replay.
 	"""
-	time_steps = 250001
+	time_steps = 200001
 	# Run training
 	main(time_steps)
